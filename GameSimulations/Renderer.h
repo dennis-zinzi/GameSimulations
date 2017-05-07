@@ -1,9 +1,11 @@
 #pragma once
 
 #include "common.h"
+#include "Utilities.h"
 
 #include "Map.h"
 #include "Entity.h"
+#include "PhysicsManager.h"
 
 #include <string>
 #include <iostream>
@@ -16,6 +18,7 @@ using std::string;
 using std::cout;
 using std::endl;
 
+
 class Renderer{
 	public:
 		Renderer();
@@ -23,6 +26,7 @@ class Renderer{
 
 		bool CheckInputs();
 		void RenderScene(float msec);
+		void CreateEntities();
 
 	private:
 		SDL_Window *window;
@@ -31,7 +35,10 @@ class Renderer{
 		SDL_Surface *screen;
 		Map *map;
 		Entity *player;
+		vector<Entity*> ais;
 		SDL_Texture *playerTex;
+		SDL_Texture *aiTex;
+		PhysicsManager *p;
 
 		void DrawMap();
 		SDL_Texture* LoadTex(string texfile);

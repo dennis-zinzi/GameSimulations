@@ -1,17 +1,7 @@
 #include "Entity.h"
 #include "Renderer.h"
+#include "Utilities.h"
 
-#define NUMOFENTITIES 5
-
-Entity* createEntities(){
-	Entity entities[NUMOFENTITIES];
-
-	for(int i = 0; i < NUMOFENTITIES; i++){
-		entities[i] = Entity();
-	}
-
-	return entities;
-}
 
 int main(int argc, char **argv){
 	bool running = true;

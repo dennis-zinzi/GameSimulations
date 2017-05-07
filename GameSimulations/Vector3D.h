@@ -81,7 +81,7 @@ class Vector3D{
 		float magnitude() const;
 		Vector3D makeUnitVector3D() const;
 		Vector3D findOrthagonalUnitVector(const Vector3D &v) const;
-
+		float getVector3DDirection() const;
 
 		//Operator overloading operations
 		Vector3D operator+(const Vector3D &v) const;

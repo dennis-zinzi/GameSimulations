@@ -13,11 +13,25 @@ Renderer::Renderer(){
 	map = new Map();
 	player = new Entity(30, 30, 0);
 	playerTex = LoadTex("player_f.png");
+	aiTex = LoadTex("ai_f.png");
+
+	p = new PhysicsManager();
 }
 
 Renderer::~Renderer(){
 	IMG_Quit();
 	SDL_Quit();
+}
+
+
+void Renderer::CreateEntities(){
+	//ais = new Entity[NUMOFENTITIES];
+	ais.clear();
+
+	for(int i = 0; i < NUMOFENTITIES; i++){
+		Vector3D pos(Utilities::RandomFloat(0.0f, 80.0f), Utilities::RandomFloat(0.0f, 80.0f), 0);
+		ais.push_back(new Entity(pos));
+	}
 }
 
 
@@ -32,10 +46,19 @@ void Renderer::RenderScene(float msec){
 	SDL_Rect rect;
 	rect.x = player->getXPosition();
 	rect.y = player->getYPosition();
-	rect.h = 40;
-	rect.w = 30;
+	rect.h = 20;
+	rect.w = 15;
 
 	SDL_RenderCopy(renderer, playerTex, nullptr, &rect);
+
+	for(auto ai : ais){
+		SDL_Rect arect;
+		arect.x = ai->getXPosition();
+		arect.y = ai->getYPosition();
+		arect.h = 20;
+		arect.w = 15;
+		SDL_RenderCopy(renderer, aiTex, nullptr, &arect);
+	}
 
 	//SDL update render	
 	SDL_RenderPresent(renderer);
@@ -58,6 +81,9 @@ bool Renderer::CheckInputs(){
 				switch(event.key.keysym.sym){
 					case SDLK_ESCAPE:
 						return false;
+					case SDLK_k:
+						CreateEntities();
+						break;
 
 					default: 
 						break;
@@ -69,25 +95,38 @@ bool Renderer::CheckInputs(){
 
 	const Uint8 *keyboard_state = SDL_GetKeyboardState(NULL);
 
+	bool directions[4];
+	for(int i = 0; i < 4; i++){
+		directions[i] = false;
+	}
+
 	// Move player
 	if(keyboard_state[SDL_SCANCODE_W] && !(keyboard_state[SDL_SCANCODE_S])){
-		player->updateYPos(-0.1f);
+		//player->updateYPos(-0.1f);
+		directions[UP] = true;
 		playerTex = LoadTex("player_b.png");
 	}
 	else if(keyboard_state[SDL_SCANCODE_S] && !keyboard_state[SDL_SCANCODE_W]){
-		player->updateYPos(0.1f);
+		//player->updateYPos(0.1f);
+		directions[DOWN] = true;
 		playerTex = LoadTex("player_f.png");
 	}
 
 	if(keyboard_state[SDL_SCANCODE_D] && !keyboard_state[SDL_SCANCODE_A]){
-		player->updateXPos(0.1f);
+		//player->updateXPos(0.1f);
+		directions[RIGHT] = true;
 		playerTex = LoadTex("player_r.png");
 	}
 	else if(keyboard_state[SDL_SCANCODE_A] && !keyboard_state[SDL_SCANCODE_D]){
-		player->updateXPos(-0.1f);
+		//player->updateXPos(-0.1f);
+		directions[LEFT] = true;
 		playerTex = LoadTex("player_l.png");
 	}
 
+	p->UpdateVelocity(player, directions);
+	p->UpdateEntityPos(player);
+	
+	//cout << "Player Pos: " << player->getPosition() << endl;
 	return true;
 }
 

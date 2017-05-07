@@ -102,6 +102,11 @@ Vector3D Vector3D::findOrthagonalUnitVector(const Vector3D &v) const{
 }
 
 
+float Vector3D::getVector3DDirection() const{
+	return 0.0f;
+}
+
+
 /**
  * Operator overloading of '+' to allow addition of two Vector3Ds
  *

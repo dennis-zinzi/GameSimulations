@@ -124,15 +124,19 @@
     <ClInclude Include="common.h" />
     <ClInclude Include="Entity.h" />
     <ClInclude Include="Map.h" />
+    <ClInclude Include="PhysicsManager.h" />
     <ClInclude Include="Renderer.h" />
     <ClInclude Include="Tile.h" />
+    <ClInclude Include="Utilities.h" />
     <ClInclude Include="Vector3D.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Entity.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Map.cpp" />
+    <ClCompile Include="PhysicsManager.cpp" />
     <ClCompile Include="Renderer.cpp" />
+    <ClCompile Include="Utilities.cpp" />
     <ClCompile Include="Vector3D.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

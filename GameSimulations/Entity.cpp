@@ -17,3 +17,12 @@ Entity::Entity(float x, float y, float z, float aggroRange){
 	this->aggroRange = aggroRange;
 	entitiesInRange = 0;
 }
+
+
+void Entity::UpdateEntity(vector<Entity*> entites){
+	for(auto e : entites){
+		if(e->getPosition().getX()){
+
+		}
+	}
+}

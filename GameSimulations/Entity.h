@@ -2,11 +2,25 @@
 #include "Vector3D.h"
 #include "common.h"
 
+#include <vector>
+
+using std::vector;
+
+
+enum FORCE{
+	UP,
+	DOWN,
+	LEFT,
+	RIGHT
+};
+
 class Entity {
 	public:
 		Entity(float aggroRange = 1.0f);
 		Entity(const Vector3D &v, float aggroRange = 1.0f);
 		Entity(float x, float y, float z, float aggroRange = 1.0f);
+
+		void UpdateEntity(vector<Entity*> entites);
 
 
 		inline void updateAggroRange(float aggroRange){
@@ -25,6 +39,14 @@ class Entity {
 			return pos;
 		}
 
+		inline Vector3D getVelocity(){
+			return velocity;
+		}
+
+		inline void setVelocity(Vector3D vel){
+			velocity = vel;
+		}
+
 		inline void updateEntitiesInRange(int entitiesInRange){
 			this->entitiesInRange = entitiesInRange;
 		}
@@ -36,7 +58,7 @@ class Entity {
 		/* Sigle components getter and setter methods */
 		inline void updateXPos(float x){
 			//pos.setX(x);
-			if(pos.getX() + x > 0 && pos.getX() + x < WINDOW_WIDTH - TILE_LENGTH){
+			if(pos.getX() + x > 0 && pos.getX() + x < WINDOW_WIDTH - (TILE_LENGTH / 2)){
 				pos.setX(pos.getX() + x);
 			}
 		}
@@ -46,7 +68,7 @@ class Entity {
 		}
 
 		inline void updateYPos(float y){
-			if(pos.getY() + y > 0 && pos.getY() + y < WINDOW_HEIGHT - TILE_LENGTH){
+			if(pos.getY() + y > 0 && pos.getY() + y < WINDOW_HEIGHT - (TILE_LENGTH / 2)){
 				pos.setY(pos.getY() + y);
 			}
 		}
@@ -62,10 +84,20 @@ class Entity {
 		inline float getZPosition(){
 			return pos.getZ();
 		}
+
+		inline Vector3D getDirVector() const{
+			return pos.makeUnitVector3D();
+		}
+
+		inline float getEntityDir() const{
+			Vector3D unit = pos.makeUnitVector3D();
+			return atan2(unit.getY(), unit.getX()) * (180 / PI_VAL);
+		}
 		
 
 	private:
 		Vector3D pos;
+		Vector3D velocity;
 		float aggroRange;
 		int entitiesInRange;
 };
