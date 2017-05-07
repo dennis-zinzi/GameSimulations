@@ -1,5 +1,6 @@
 #pragma once
 #include "Vector3D.h"
+#include "common.h"
 
 class Entity {
 	public:
@@ -34,7 +35,10 @@ class Entity {
 
 		/* Sigle components getter and setter methods */
 		inline void updateXPos(float x){
-			pos.setX(x);
+			//pos.setX(x);
+			if(pos.getX() + x > 0 && pos.getX() + x < WINDOW_WIDTH - TILE_LENGTH){
+				pos.setX(pos.getX() + x);
+			}
 		}
 
 		inline float getXPosition(){
@@ -42,7 +46,9 @@ class Entity {
 		}
 
 		inline void updateYPos(float y){
-			pos.setY(y);
+			if(pos.getY() + y > 0 && pos.getY() + y < WINDOW_HEIGHT - TILE_LENGTH){
+				pos.setY(pos.getY() + y);
+			}
 		}
 
 		inline float getYPosition(){

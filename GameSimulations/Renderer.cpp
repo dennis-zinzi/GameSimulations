@@ -2,25 +2,40 @@
 
 Renderer::Renderer(){
 	SDL_Init(SDL_INIT_EVERYTHING);
-	screen = SDL_CreateWindow("SDL Engine", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, WINDOW_WIDTH, WINDOW_HEIGHT, SDL_WINDOW_OPENGL);
-	renderer = SDL_CreateRenderer(screen, -1, 0);
-	context = SDL_GL_CreateContext(screen);
+	window = SDL_CreateWindow("SDL Engine", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, WINDOW_WIDTH, WINDOW_HEIGHT, SDL_WINDOW_OPENGL);
+	renderer = SDL_CreateRenderer(window, -1, 0);
+	context = SDL_GL_CreateContext(window);
 	IMG_Init(IMG_INIT_JPG);
 	IMG_Init(IMG_INIT_PNG);
+	
+	screen = SDL_GetWindowSurface(window);
 
 	map = new Map();
+	player = new Entity(30, 30, 0);
+	playerTex = LoadTex("player_f.png");
 }
 
 Renderer::~Renderer(){
+	IMG_Quit();
 	SDL_Quit();
 }
 
 
 void Renderer::RenderScene(float msec){
-	SDL_SetRenderDrawColor(renderer, 79, 79, 79, 255);
+	//SDL_SetRenderDrawColor(renderer, 79, 79, 79, 255);
 	SDL_RenderClear(renderer);
+	//SDL_DestroyTexture(playerTex);
+
 
 	DrawMap();
+
+	SDL_Rect rect;
+	rect.x = player->getXPosition();
+	rect.y = player->getYPosition();
+	rect.h = 40;
+	rect.w = 30;
+
+	SDL_RenderCopy(renderer, playerTex, nullptr, &rect);
 
 	//SDL update render	
 	SDL_RenderPresent(renderer);
@@ -44,22 +59,7 @@ bool Renderer::CheckInputs(){
 					case SDLK_ESCAPE:
 						return false;
 
-					//case SDLK_w:
-					//	Player->MoveForward();
-					//	break;
-					//case SDLK_s:
-					//	Player->MoveBackward();
-					//	break;
-					//case SDLK_a:
-					//	Player->MoveLeft();
-					//	break;
-					//case SDLK_d:
-					//	Player->MoveRight();
-					//	break;
-					//case SDLK_p:
-					//	Player->ShowControls();
-					//	break;
-					default:
+					default: 
 						break;
 				}
 				break;
@@ -67,7 +67,26 @@ bool Renderer::CheckInputs(){
 		}
 	}
 
-	//Player->NoMovement();
+	const Uint8 *keyboard_state = SDL_GetKeyboardState(NULL);
+
+	// Move player
+	if(keyboard_state[SDL_SCANCODE_W] && !(keyboard_state[SDL_SCANCODE_S])){
+		player->updateYPos(-0.1f);
+		playerTex = LoadTex("player_b.png");
+	}
+	else if(keyboard_state[SDL_SCANCODE_S] && !keyboard_state[SDL_SCANCODE_W]){
+		player->updateYPos(0.1f);
+		playerTex = LoadTex("player_f.png");
+	}
+
+	if(keyboard_state[SDL_SCANCODE_D] && !keyboard_state[SDL_SCANCODE_A]){
+		player->updateXPos(0.1f);
+		playerTex = LoadTex("player_r.png");
+	}
+	else if(keyboard_state[SDL_SCANCODE_A] && !keyboard_state[SDL_SCANCODE_D]){
+		player->updateXPos(-0.1f);
+		playerTex = LoadTex("player_l.png");
+	}
 
 	return true;
 }
@@ -78,13 +97,13 @@ void Renderer::DrawMap(){
 				Tile t = map->GetTiles()[x][y];
 
 				SDL_Rect rect;
-				rect.x = t.center.getX();
-				rect.y = t.center.getY();
+				rect.x = t.GetCenter().getX();
+				rect.y = t.GetCenter().getY();
 				rect.h = 40;
 				rect.w = 40;
 
 				int red, green, blue;
-				switch(t.type){
+				switch(t.GetType()){
 					case BASE:
 						red = 255;
 						green = 255;
@@ -136,4 +155,26 @@ void Renderer::DrawMap(){
 				SDL_RenderFillRect(renderer, &rect);
 		}
 	}
+}
+
+
+SDL_Texture* Renderer::LoadTex(string texfile){
+	string texturePath = IMAGES_PATH + texfile;
+
+	SDL_Texture *texture = nullptr;
+
+	SDL_Surface *surface = IMG_Load(texturePath.c_str());
+	if(!surface){
+		cout << "ERROR: couldn't find " << texfile << endl;
+		return nullptr;
+	}
+
+	texture = SDL_CreateTextureFromSurface(renderer, surface);
+	if(!texture){
+		cout << "ERROR: problem loading " << texfile << endl;
+	}
+
+	SDL_FreeSurface(surface);
+
+	return texture;
 }

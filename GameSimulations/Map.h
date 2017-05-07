@@ -4,6 +4,7 @@
 #include "../SDL2-2.0.5/include/SDL.h"
 #include "../SDL2-2.0.5/SDL2_image-2.0.1/include/SDL_image.h"
 #include "Vector3D.h"
+#include "Tile.h"
 #include "common.h"
 
 #include <vector>
@@ -20,22 +21,7 @@ using std::ifstream;
 using std::getline;
 using std::istringstream;
 
-enum TileType{
-	BASE,
-	OPEN,
-	COVERED,
-	BRIDGE,
-	FOREST,
-	RIVER,
-	GATE,
-	WALL,
-	CASTLE
-};
 
-struct Tile{
-	Vector3D center;
-	TileType type;
-};
 
 class Map{
 	public:

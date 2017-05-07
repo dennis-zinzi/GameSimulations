@@ -8,6 +8,7 @@ Map::Map(){
 		return;
 	}
 
+	//Create 2D array of Tiles
 	tiles = new Tile*[20];
 	for(int i = 0; i < 20; ++i){
 		tiles[i] = new Tile[20];
@@ -23,35 +24,35 @@ Map::Map(){
 		int column = 0;
 		for(char &c : line){
 			Tile t;
-			t.center = Vector3D(40 * column, 40 * row, 0);
+			t.SetCenter(Vector3D(TILE_LENGTH * column, TILE_LENGTH * row, 0));
 
 			switch(c){
 				case 'B':
-					t.type = TileType::BASE;
+					t.SetType(TileType::BASE);
 					break;
 				case 'O':
-					t.type = TileType::OPEN;
+					t.SetType(TileType::OPEN);
 					break;
 				case 'C':
-					t.type = TileType::COVERED;
+					t.SetType(TileType::COVERED);
 					break;
 				case 'P':
-					t.type = TileType::BRIDGE;
+					t.SetType(TileType::BRIDGE);
 					break;
 				case 'F':
-					t.type = TileType::FOREST;
+					t.SetType(TileType::FOREST);
 					break;
 				case 'R':
-					t.type = TileType::RIVER;
+					t.SetType(TileType::RIVER);
 					break;
 				case 'G':
-					t.type = TileType::GATE;
+					t.SetType(TileType::GATE);
 					break;
 				case 'W':
-					t.type = TileType::WALL;
+					t.SetType(TileType::WALL);
 					break;
 				case 'V':
-					t.type = TileType::CASTLE;
+					t.SetType(TileType::CASTLE);
 			}
 
 			tiles[row][column] = t;
