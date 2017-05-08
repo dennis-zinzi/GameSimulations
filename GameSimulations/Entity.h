@@ -31,9 +31,7 @@ class Entity {
 			return aggroRange;
 		}
 
-		inline void updatePos(const Vector3D &pos){
-			this->pos = pos;
-		}
+		void updatePos(const Vector3D &pos);
 
 		inline Vector3D getPosition(){
 			return pos;
@@ -43,9 +41,7 @@ class Entity {
 			return velocity;
 		}
 
-		inline void setVelocity(Vector3D vel){
-			velocity = vel;
-		}
+		void setVelocity(Vector3D vel);
 
 		inline void updateEntitiesInRange(int entitiesInRange){
 			this->entitiesInRange = entitiesInRange;
@@ -85,14 +81,6 @@ class Entity {
 			return pos.getZ();
 		}
 
-		inline Vector3D getDirVector() const{
-			return pos.makeUnitVector3D();
-		}
-
-		inline float getEntityDir() const{
-			Vector3D unit = pos.makeUnitVector3D();
-			return atan2(unit.getY(), unit.getX()) * (180 / PI_VAL);
-		}
 		
 
 	private:

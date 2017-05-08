@@ -13,5 +13,5 @@
 #define PI_VAL 3.14159265358979323846f
 #define NUMOFENTITIES 10
 
-#define MAX_VEL 0.25f
-#define ACCELERATION 1.01f
+#define MAX_VEL 7.5f
+#define ACCELERATION 0.5f

@@ -34,7 +34,7 @@ void PhysicsManager::UpdateVelocity(Entity *e, bool *forces){
 	}
 
 	Vector3D vel = e->getVelocity() + acceleration*timeStep;
-	cout << "New v: " << vel << endl;
+	cout << "New v: " << vel.magnitude() << endl;
 	e->setVelocity(vel);
 }
 
