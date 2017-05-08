@@ -11,7 +11,7 @@ Renderer::Renderer(){
 	screen = SDL_GetWindowSurface(window);
 
 	map = new Map();
-	player = new Entity(30, 30, 0);
+	player = new Entity(30, 30, 0, map);
 	playerTex = LoadTex("player_f.png");
 	aiTex = LoadTex("ai_f.png");
 
@@ -30,7 +30,7 @@ void Renderer::CreateEntities(){
 
 	for(int i = 0; i < NUMOFENTITIES; i++){
 		Vector3D pos(Utilities::RandomFloat(0.0f, 80.0f), Utilities::RandomFloat(0.0f, 80.0f), 0);
-		ais.push_back(new Entity(pos));
+		ais.push_back(new Entity(pos, map));
 	}
 }
 

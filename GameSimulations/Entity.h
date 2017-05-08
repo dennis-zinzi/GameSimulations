@@ -1,6 +1,9 @@
 #pragma once
-#include "Vector3D.h"
+
 #include "common.h"
+#include "Vector3D.h"
+#include "Tile.h"
+#include "Map.h"
 
 #include <vector>
 
@@ -17,8 +20,8 @@ enum FORCE{
 class Entity {
 	public:
 		Entity(float aggroRange = 1.0f);
-		Entity(const Vector3D &v, float aggroRange = 1.0f);
-		Entity(float x, float y, float z, float aggroRange = 1.0f);
+		Entity(const Vector3D &v, Map *map, float aggroRange = 1.0f);
+		Entity(float x, float y, float z, Map *map, float aggroRange = 1.0f);
 
 		void UpdateEntity(vector<Entity*> entites);
 
@@ -81,11 +84,20 @@ class Entity {
 			return pos.getZ();
 		}
 
-		
+		inline void updateTile(){
+			//cout << (map == nullptr ? "y" : "n") << endl;
+			//if(map)	
+			currTile = map->GetTiles()[(int)(pos.getY() + 7.5f) / TILE_LENGTH][(int)(pos.getX() + 10) / TILE_LENGTH];
+			cout << "Tile is: " << currTile.GetTileMultiplier() << endl;
+			//cout << "X: " << (int)(pos.getX() + 10) / TILE_LENGTH << ", Y: " << (int)(pos.getY() + 7.5f) / TILE_LENGTH << endl << endl;
+		}
 
 	private:
 		Vector3D pos;
 		Vector3D velocity;
+		Tile currTile;
+		Map *map;
+
 		float aggroRange;
 		int entitiesInRange;
 };
