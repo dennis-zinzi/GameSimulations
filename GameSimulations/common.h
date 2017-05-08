@@ -15,3 +15,7 @@
 
 #define MAX_VEL 7.5f
 #define ACCELERATION 0.5f
+#define ELASTICITY 0.9f
+
+#define ENTITY_HEIGHT 20
+#define ENTITY_WIDTH 15

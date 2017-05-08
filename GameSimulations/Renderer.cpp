@@ -19,13 +19,16 @@ Renderer::Renderer(){
 }
 
 Renderer::~Renderer(){
+	for(auto tex : textures){
+		SDL_DestroyTexture(tex.tex);
+	}
+
 	IMG_Quit();
 	SDL_Quit();
 }
 
 
 void Renderer::CreateEntities(){
-	//ais = new Entity[NUMOFENTITIES];
 	ais.clear();
 
 	for(int i = 0; i < NUMOFENTITIES; i++){
@@ -38,7 +41,6 @@ void Renderer::CreateEntities(){
 void Renderer::RenderScene(float msec){
 	//SDL_SetRenderDrawColor(renderer, 79, 79, 79, 255);
 	SDL_RenderClear(renderer);
-	//SDL_DestroyTexture(playerTex);
 
 
 	DrawMap();
@@ -55,13 +57,15 @@ void Renderer::RenderScene(float msec){
 		SDL_Rect arect;
 		arect.x = ai->getXPosition();
 		arect.y = ai->getYPosition();
-		arect.h = 20;
-		arect.w = 15;
+		arect.h = ENTITY_HEIGHT;
+		arect.w = ENTITY_WIDTH;
 		SDL_RenderCopy(renderer, aiTex, nullptr, &arect);
 	}
 
 	//SDL update render	
 	SDL_RenderPresent(renderer);
+
+	//cout << "T: " << 1000/FRAME_RATE << " FPS: " << (SDL_GetTicks() - msec) << endl;
 
 	//Cap frame rate at 60 FPS
 	if(1000 / FRAME_RATE > SDL_GetTicks() - msec){
@@ -80,6 +84,7 @@ bool Renderer::CheckInputs(){
 			case SDL_KEYDOWN: {
 				switch(event.key.keysym.sym){
 					case SDLK_ESCAPE:
+					case SDLK_x:
 						return false;
 					case SDLK_k:
 						CreateEntities();
@@ -125,7 +130,19 @@ bool Renderer::CheckInputs(){
 
 	p->UpdateVelocity(player, directions);
 	p->UpdateEntityPos(player);
+
+	int n = 0;
+	for(auto e : ais){
+		bool colliding = p->IsEntityCollidingWithEntity(player, e);
+		if(colliding){
+			p->handleEntityCollision(player, e, directions);
+		}
+	}
 	
+	if(n > 0){
+		cout << "Colliding: " << n << endl << endl;
+	}
+
 	//cout << "Player Pos: " << player->getPosition() << endl;
 	return true;
 }
@@ -198,6 +215,13 @@ void Renderer::DrawMap(){
 
 
 SDL_Texture* Renderer::LoadTex(string texfile){
+	//Check if texture already loaded, and return it if true
+	for(auto t : textures){
+		if(t.name == texfile){
+			return t.tex;
+		}
+	}
+
 	string texturePath = IMAGES_PATH + texfile;
 
 	SDL_Texture *texture = nullptr;
@@ -215,5 +239,6 @@ SDL_Texture* Renderer::LoadTex(string texfile){
 
 	SDL_FreeSurface(surface);
 
+	textures.push_back(Texture {texfile, texture});
 	return texture;
 }

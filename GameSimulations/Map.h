@@ -1,8 +1,8 @@
 #pragma once
 
-//SDL includes
+//SDL include
 #include "../SDL2-2.0.5/include/SDL.h"
-#include "../SDL2-2.0.5/SDL2_image-2.0.1/include/SDL_image.h"
+
 #include "Vector3D.h"
 #include "Tile.h"
 #include "common.h"

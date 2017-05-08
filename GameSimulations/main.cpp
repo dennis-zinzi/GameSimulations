@@ -11,6 +11,7 @@ int main(int argc, char **argv){
 	float msec = SDL_GetTicks();
 
 	while(running){
+		//msec = SDL_GetTicks();
 		running = renderer->CheckInputs();
 
 		renderer->RenderScene(msec);

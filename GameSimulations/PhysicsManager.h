@@ -17,6 +17,9 @@ class PhysicsManager{
 		void UpdateVelocity(Entity *e, bool *forces);
 		void UpdateEntityPos(Entity *e);
 
+		bool IsEntityCollidingWithEntity(Entity *colliding, Entity *e);
+		void handleEntityCollision(Entity *eHitting, Entity *eHit, bool *forces);
+
 	private:
 		vector<Entity*> entities;
 		float timeStep;

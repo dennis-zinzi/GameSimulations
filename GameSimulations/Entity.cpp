@@ -8,8 +8,8 @@ Entity::Entity(float aggroRange){
 
 Entity::Entity(const Vector3D &v, Map *map, float aggroRange){
 	pos = v;
-
-	cout << (map == nullptr ? "y" : "n") << endl;
+	
+	//Set tile
 	currTile = map->GetTiles()[(int)pos.getX() / TILE_LENGTH][(int)pos.getY() / TILE_LENGTH];
 
 	this->map = map;
@@ -22,7 +22,6 @@ Entity::Entity(float x, float y, float z, Map *map, float aggroRange){
 	this->aggroRange = aggroRange;
 	entitiesInRange = 0;
 
-	cout << (map == nullptr ? "y" : "n") << endl;
 	currTile = map->GetTiles()[(int)pos.getX() / TILE_LENGTH][(int)pos.getY() / TILE_LENGTH];
 
 	this->map = map;
@@ -55,14 +54,5 @@ void Entity::setVelocity(Vector3D vel){
 		v *= MAX_VEL * currTile.GetTileMultiplier();
 
 		velocity = v;
-	}
-}
-
-
-void Entity::UpdateEntity(vector<Entity*> entites){
-	for(auto e : entites){
-		if(e->getPosition().getX()){
-
-		}
 	}
 }

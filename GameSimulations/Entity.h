@@ -23,7 +23,7 @@ class Entity {
 		Entity(const Vector3D &v, Map *map, float aggroRange = 1.0f);
 		Entity(float x, float y, float z, Map *map, float aggroRange = 1.0f);
 
-		void UpdateEntity(vector<Entity*> entites);
+		//void UpdateEntity(vector<Entity*> entites);
 
 
 		inline void updateAggroRange(float aggroRange){
@@ -56,7 +56,7 @@ class Entity {
 
 		/* Sigle components getter and setter methods */
 		inline void updateXPos(float x){
-			//pos.setX(x);
+			//Only move if within window bounds
 			if(pos.getX() + x > 0 && pos.getX() + x < WINDOW_WIDTH - (TILE_LENGTH / 2)){
 				pos.setX(pos.getX() + x);
 			}
@@ -67,6 +67,7 @@ class Entity {
 		}
 
 		inline void updateYPos(float y){
+			//Only move if within window bounds
 			if(pos.getY() + y > 0 && pos.getY() + y < WINDOW_HEIGHT - (TILE_LENGTH / 2)){
 				pos.setY(pos.getY() + y);
 			}
@@ -85,12 +86,12 @@ class Entity {
 		}
 
 		inline void updateTile(){
-			//cout << (map == nullptr ? "y" : "n") << endl;
-			//if(map)	
+			//Update which Tile entity is in based on pos	
 			currTile = map->GetTiles()[(int)(pos.getY() + 7.5f) / TILE_LENGTH][(int)(pos.getX() + 10) / TILE_LENGTH];
-			cout << "Tile is: " << currTile.GetTileMultiplier() << endl;
-			//cout << "X: " << (int)(pos.getX() + 10) / TILE_LENGTH << ", Y: " << (int)(pos.getY() + 7.5f) / TILE_LENGTH << endl << endl;
+
+			//cout << "Tile multi: " << currTile.GetTileMultiplier() << endl;
 		}
+
 
 	private:
 		Vector3D pos;

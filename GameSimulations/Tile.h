@@ -55,7 +55,7 @@ class Tile{
 					return 0.35f;
 				case GATE:
 					return 0.15;
-				//might change later
+				//Change later
 				case WALL:
 					return 0.001f;
 			}

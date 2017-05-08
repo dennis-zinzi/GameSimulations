@@ -62,17 +62,3 @@ Map::Map(){
 		row++;
 	}
 }
-
-
-
-
-/*
-BASE,
-OPEN,
-COVERED,
-BRIDGE,
-FOREST,
-RIVER,
-GATE,
-WALL
-*/

@@ -18,6 +18,12 @@ using std::string;
 using std::cout;
 using std::endl;
 
+//Represents texture (used to avoid loading textures multiple times)
+struct Texture{
+	string name;
+	SDL_Texture *tex;
+};
+
 
 class Renderer{
 	public:
@@ -36,6 +42,9 @@ class Renderer{
 		Map *map;
 		Entity *player;
 		vector<Entity*> ais;
+
+		vector<Texture> textures;
+
 		SDL_Texture *playerTex;
 		SDL_Texture *aiTex;
 		PhysicsManager *p;

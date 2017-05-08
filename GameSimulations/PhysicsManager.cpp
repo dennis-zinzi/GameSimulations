@@ -44,3 +44,51 @@ void PhysicsManager::UpdateEntityPos(Entity *e){
 	e->updatePos(pos);
 	e->updateTile();
 }
+
+
+
+bool PhysicsManager::IsEntityCollidingWithEntity(Entity *colliding, Entity *e){
+
+	//Get current entity's
+	float xMin = colliding->getXPosition(),
+		yMin = colliding->getYPosition();
+
+	//Get other's max and min x coords for e
+	float sMinX = e->getXPosition(),
+		sMaxX = e->getXPosition() + ENTITY_WIDTH;
+
+	//Get max and min y coords for e
+	float sMinY = e->getYPosition(),
+		sMaxY = e->getYPosition() + ENTITY_HEIGHT;
+
+	float xCenter = xMin + (ENTITY_WIDTH / 2.0f),
+		yCenter = yMin + (ENTITY_HEIGHT / 2.0f);
+
+	//If Center of current entity is within e' bounds, then definitely collided
+	if(xCenter >= sMinX && xCenter <= sMaxX
+		&& yCenter >= sMinY && yCenter <= sMaxY){
+		return true;
+	}
+
+	//Get max x and y coords for current entity
+	float xMax = xMin + ENTITY_WIDTH,
+		yMax = yMin + ENTITY_HEIGHT;
+
+	//Check if Entity overlaps with e
+	if((xMax >= sMinX) && (sMaxX >= xMin) && (yMax >= sMinY) && (sMaxY >= yMin)){
+		//If current entity is anywhere between the bounds of e then must overlap
+		return true;
+	}
+
+	//Any other scenario entities don't overlap
+	return false;
+}
+
+
+void PhysicsManager::handleEntityCollision(Entity *eHitting, Entity *eHit, bool *forces){
+	UpdateVelocity(eHitting, forces);
+	UpdateVelocity(eHit, forces);
+
+	UpdateEntityPos(eHitting);
+	UpdateEntityPos(eHit);
+}
