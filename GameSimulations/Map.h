@@ -5,6 +5,8 @@
 
 #include "Vector3D.h"
 #include "Tile.h"
+#include "PathNode.h"
+
 #include "common.h"
 
 #include <vector>
@@ -30,9 +32,11 @@ class Map{
 
 		void DrawMap();
 
-		Tile** GetTiles() const{
+		inline Tile** GetTiles() const{
 			return tiles;
 		}
+
+		vector<PathNode*> GetMapAsPathNodes() const;
 
 	private:
 		Tile **tiles;

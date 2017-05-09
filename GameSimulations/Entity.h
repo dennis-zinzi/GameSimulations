@@ -1,9 +1,10 @@
 #pragma once
 
 #include "common.h"
-#include "Vector3D.h"
+#include "Vector2D.h"
 #include "Tile.h"
 #include "Map.h"
+//#include "PhysicsManager.h"
 
 #include <vector>
 
@@ -19,41 +20,24 @@ enum FORCE{
 
 class Entity {
 	public:
-		Entity(float aggroRange = 1.0f);
-		Entity(const Vector3D &v, Map *map, float aggroRange = 1.0f);
-		Entity(float x, float y, float z, Map *map, float aggroRange = 1.0f);
+		Entity(float mass = 1.0f);
+		Entity(const Vector2D &v, Map *map, float mass = 1.0f);
+		Entity(float x, float y, Map *map, float mass = 1.0f);
 
-		//void UpdateEntity(vector<Entity*> entites);
+		
+		void updatePos(const Vector2D &pos);
 
-
-		inline void updateAggroRange(float aggroRange){
-			this->aggroRange = aggroRange;
-		}
-
-		inline float getAggroRange(){
-			return aggroRange;
-		}
-
-		void updatePos(const Vector3D &pos);
-
-		inline Vector3D getPosition(){
+		inline Vector2D getPosition(){
 			return pos;
 		}
 
-		inline Vector3D getVelocity(){
+		inline Vector2D getVelocity(){
 			return velocity;
 		}
 
-		void setVelocity(Vector3D vel);
+		void setVelocity(Vector2D vel);
 
-		inline void updateEntitiesInRange(int entitiesInRange){
-			this->entitiesInRange = entitiesInRange;
-		}
-
-		inline int getEntitiesInRange(){
-			return entitiesInRange;
-		}
-
+		
 		/* Sigle components getter and setter methods */
 		inline void updateXPos(float x){
 			//Only move if within window bounds
@@ -77,14 +61,16 @@ class Entity {
 			return pos.getY();
 		}
 
-		inline void updateZPos(float z){
-			pos.setZ(z);
+
+
+		inline float getMass() const{
+			return mass;
 		}
 
-		inline float getZPosition(){
-			return pos.getZ();
-		}
 
+		/**
+		 * Updates Entity's current tile
+		 */
 		inline void updateTile(){
 			//Update which Tile entity is in based on pos	
 			currTile = map->GetTiles()[(int)(pos.getY() + 7.5f) / TILE_LENGTH][(int)(pos.getX() + 10) / TILE_LENGTH];
@@ -92,13 +78,19 @@ class Entity {
 			//cout << "Tile multi: " << currTile.GetTileMultiplier() << endl;
 		}
 
+		inline bool getWin() const{
+			return win;
+		}
+
+		inline Tile getCurrentTile() const{
+			return currTile;
+		}
 
 	private:
-		Vector3D pos;
-		Vector3D velocity;
+		Vector2D pos;
+		Vector2D velocity;
 		Tile currTile;
 		Map *map;
-
-		float aggroRange;
-		int entitiesInRange;
+		float mass;
+		bool win;
 };

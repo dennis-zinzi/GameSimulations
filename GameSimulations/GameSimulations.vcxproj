@@ -74,9 +74,12 @@
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <SDLCheck>true</SDLCheck>
+      <AdditionalIncludeDirectories>$(SolutionDir)SDL2-2.0.5\include;$(SolutionDir)SDL2-2.0.5\SDL2_image-2.0.1\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
+      <SubSystem>Console</SubSystem>
+      <AdditionalDependencies>$(SolutionDir)SDL2-2.0.5\lib\$(PlatformShortName)\SDL2.lib;$(SolutionDir)SDL2-2.0.5\lib\$(PlatformShortName)\SDL2main.lib;$(SolutionDir)SDL2-2.0.5\SDL2_image-2.0.1\lib\$(PlatformShortName)\SDL2_image.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
@@ -121,22 +124,32 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="AStar.h" />
+    <ClInclude Include="BoidFlock.h" />
     <ClInclude Include="common.h" />
     <ClInclude Include="Entity.h" />
+    <ClInclude Include="Game.h" />
     <ClInclude Include="Map.h" />
+    <ClInclude Include="PathNode.h" />
     <ClInclude Include="PhysicsManager.h" />
     <ClInclude Include="Renderer.h" />
     <ClInclude Include="Tile.h" />
     <ClInclude Include="Utilities.h" />
+    <ClInclude Include="Vector2D.h" />
     <ClInclude Include="Vector3D.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="AStar.cpp" />
+    <ClCompile Include="BoidFlock.cpp" />
     <ClCompile Include="Entity.cpp" />
+    <ClCompile Include="Game.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Map.cpp" />
+    <ClCompile Include="PathNode.cpp" />
     <ClCompile Include="PhysicsManager.cpp" />
     <ClCompile Include="Renderer.cpp" />
     <ClCompile Include="Utilities.cpp" />
+    <ClCompile Include="Vector2D.cpp" />
     <ClCompile Include="Vector3D.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

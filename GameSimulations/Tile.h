@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Vector3D.h"
+#include "Vector2D.h"
 
 enum TileType{
 	BASE,
@@ -19,12 +19,12 @@ class Tile{
 		Tile(){
 		}
 
-		Tile(Vector3D center, TileType type){
+		Tile(Vector2D center, TileType type){
 			this->center = center;
 			this->type = type;
 		}
 
-		inline Vector3D GetCenter() const{
+		inline Vector2D GetCenter() const{
 			return center;
 		}
 
@@ -32,7 +32,7 @@ class Tile{
 			return type;
 		}
 
-		inline void SetCenter(Vector3D center){
+		inline void SetCenter(Vector2D center){
 			this->center = center;
 		}
 
@@ -54,14 +54,16 @@ class Tile{
 				case RIVER:
 					return 0.35f;
 				case GATE:
-					return 0.15;
-				//Change later
+					return 0.15f;
+				//Used for impulse
 				case WALL:
-					return 0.001f;
+					return 0.5f;
+				default:
+					return 1.0f;
 			}
 		}
 
 	private:
-		Vector3D center;
+		Vector2D center;
 		TileType type;
 };

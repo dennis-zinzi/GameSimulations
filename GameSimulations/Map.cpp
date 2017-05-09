@@ -62,3 +62,21 @@ Map::Map(){
 		row++;
 	}
 }
+
+
+vector<PathNode*> Map::GetMapAsPathNodes() const{
+	vector<PathNode*> nodes;
+	int n = 0;
+
+	for(int i = 0; i < TILES_IN_ROW; i++){
+		for(int j = 0; j < TILES_IN_ROW; j++){
+			Tile t = tiles[i][j];
+
+			PathNode *node = new PathNode(n, t.GetCenter());
+			nodes.push_back(node);
+			n++;
+		}
+	}
+
+	return nodes;
+}

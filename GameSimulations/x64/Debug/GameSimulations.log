@@ -1,40 +1,23 @@
-﻿Build started 08/05/2017 05:53:51.
+﻿Build started 09/05/2017 10:56:42.
      1>Project "H:\CSC3222\GameSimulations\GameSimulations\GameSimulations.vcxproj" on node 2 (Build target(s)).
      1>ClCompile:
-         C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\x86_amd64\CL.exe /c /I"H:\CSC3222\GameSimulations\SDL2-2.0.5\include" /I"H:\CSC3222\GameSimulations\SDL2-2.0.5\SDL2_image-2.0.1\include" /Zi /nologo /W3 /WX- /sdl /Od /D _MBCS /Gm /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Fo"x64\Debug\\" /Fd"x64\Debug\vc120.pdb" /Gd /TP /errorReport:prompt Entity.cpp Map.cpp PhysicsManager.cpp Renderer.cpp main.cpp
-         Renderer.cpp
-     1>h:\csc3222\gamesimulations\gamesimulations\Tile.h(57): warning C4305: 'return' : truncation from 'double' to 'float'
-     1>Renderer.cpp(49): warning C4244: '=' : conversion from 'float' to 'int', possible loss of data
-     1>Renderer.cpp(50): warning C4244: '=' : conversion from 'float' to 'int', possible loss of data
-     1>Renderer.cpp(58): warning C4244: '=' : conversion from 'float' to 'int', possible loss of data
-     1>Renderer.cpp(59): warning C4244: '=' : conversion from 'float' to 'int', possible loss of data
-     1>Renderer.cpp(156): warning C4244: '=' : conversion from 'float' to 'int', possible loss of data
-     1>Renderer.cpp(157): warning C4244: '=' : conversion from 'float' to 'int', possible loss of data
-         Map.cpp
-     1>h:\csc3222\gamesimulations\gamesimulations\Tile.h(57): warning C4305: 'return' : truncation from 'double' to 'float'
-     1>Map.cpp(27): warning C4244: 'argument' : conversion from 'int' to 'float', possible loss of data
-         Entity.cpp
-     1>h:\csc3222\gamesimulations\gamesimulations\Tile.h(57): warning C4305: 'return' : truncation from 'double' to 'float'
-         Generating Code...
-     1>h:\csc3222\gamesimulations\gamesimulations\tile.h(62): warning C4715: 'Tile::GetTileMultiplier' : not all control paths return a value
-         Compiling...
-         main.cpp
-     1>h:\csc3222\gamesimulations\gamesimulations\Tile.h(57): warning C4305: 'return' : truncation from 'double' to 'float'
-     1>main.cpp(11): warning C4244: 'initializing' : conversion from 'Uint32' to 'float', possible loss of data
+         C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\x86_amd64\CL.exe /c /I"H:\CSC3222\GameSimulations\SDL2-2.0.5\include" /I"H:\CSC3222\GameSimulations\SDL2-2.0.5\SDL2_image-2.0.1\include" /Zi /nologo /W3 /WX- /sdl /Od /D _MBCS /Gm /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Fo"x64\Debug\\" /Fd"x64\Debug\vc120.pdb" /Gd /TP /errorReport:prompt PhysicsManager.cpp
          PhysicsManager.cpp
-     1>h:\csc3222\gamesimulations\gamesimulations\Tile.h(57): warning C4305: 'return' : truncation from 'double' to 'float'
-         Generating Code...
        Link:
-         C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\x86_amd64\link.exe /ERRORREPORT:PROMPT /OUT:"H:\CSC3222\GameSimulations\x64\Debug\GameSimulations.exe" /INCREMENTAL /NOLOGO "H:\CSC3222\GameSimulations\SDL2-2.0.5\lib\x64\SDL2.lib" "H:\CSC3222\GameSimulations\SDL2-2.0.5\lib\x64\SDL2main.lib" "H:\CSC3222\GameSimulations\SDL2-2.0.5\SDL2_image-2.0.1\lib\x64\SDL2_image.lib" kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /DEBUG /PDB:"H:\CSC3222\GameSimulations\x64\Debug\GameSimulations.pdb" /SUBSYSTEM:CONSOLE /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"H:\CSC3222\GameSimulations\x64\Debug\GameSimulations.lib" /MACHINE:X64 x64\Debug\Entity.obj
+         C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\x86_amd64\link.exe /ERRORREPORT:PROMPT /OUT:"H:\CSC3222\GameSimulations\x64\Debug\GameSimulations.exe" /INCREMENTAL /NOLOGO "H:\CSC3222\GameSimulations\SDL2-2.0.5\lib\x64\SDL2.lib" "H:\CSC3222\GameSimulations\SDL2-2.0.5\lib\x64\SDL2main.lib" "H:\CSC3222\GameSimulations\SDL2-2.0.5\SDL2_image-2.0.1\lib\x64\SDL2_image.lib" kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /DEBUG /PDB:"H:\CSC3222\GameSimulations\x64\Debug\GameSimulations.pdb" /SUBSYSTEM:CONSOLE /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"H:\CSC3222\GameSimulations\x64\Debug\GameSimulations.lib" /MACHINE:X64 x64\Debug\AStar.obj
+         x64\Debug\BoidFlock.obj
+         x64\Debug\Entity.obj
          x64\Debug\main.obj
          x64\Debug\Map.obj
+         x64\Debug\PathNode.obj
          x64\Debug\PhysicsManager.obj
          x64\Debug\Renderer.obj
          x64\Debug\Utilities.obj
+         x64\Debug\Vector2D.obj
          x64\Debug\Vector3D.obj
          GameSimulations.vcxproj -> H:\CSC3222\GameSimulations\x64\Debug\GameSimulations.exe
      1>Done Building Project "H:\CSC3222\GameSimulations\GameSimulations\GameSimulations.vcxproj" (Build target(s)).
 
 Build succeeded.
 
-Time Elapsed 00:00:05.25
+Time Elapsed 00:00:03.24

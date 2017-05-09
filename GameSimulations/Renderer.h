@@ -6,6 +6,8 @@
 #include "Map.h"
 #include "Entity.h"
 #include "PhysicsManager.h"
+#include "BoidFlock.h"
+#include "AStar.h"
 
 #include <string>
 #include <iostream>
@@ -34,6 +36,10 @@ class Renderer{
 		void RenderScene(float msec);
 		void CreateEntities();
 
+		void RenderEntity(Entity *e, string texfile);
+
+		SDL_Texture* LoadTex(string texfile);
+
 	private:
 		SDL_Window *window;
 		SDL_Renderer *renderer;
@@ -41,7 +47,9 @@ class Renderer{
 		SDL_Surface *screen;
 		Map *map;
 		Entity *player;
+		Entity *smart;
 		vector<Entity*> ais;
+		BoidFlock *flock;
 
 		vector<Texture> textures;
 
@@ -50,5 +58,5 @@ class Renderer{
 		PhysicsManager *p;
 
 		void DrawMap();
-		SDL_Texture* LoadTex(string texfile);
+		
 };

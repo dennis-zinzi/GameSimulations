@@ -12,7 +12,7 @@ void PhysicsManager::UpdatePhysics(float msec){
 
 
 void PhysicsManager::UpdateVelocity(Entity *e, bool *forces){
-	Vector3D acceleration;
+	Vector2D acceleration;
 	if(forces[UP]){
 		acceleration.setY(acceleration.getY() - ACCELERATION);
 	}
@@ -20,7 +20,7 @@ void PhysicsManager::UpdateVelocity(Entity *e, bool *forces){
 		acceleration.setY(acceleration.getY() + ACCELERATION);
 	}
 	else{
-		e->setVelocity(Vector3D(e->getVelocity().getX(), 0.0f, 0.0f));
+		e->setVelocity(Vector2D(e->getVelocity().getX(), 0.0f));
 	}
 
 	if(forces[LEFT]){
@@ -30,17 +30,46 @@ void PhysicsManager::UpdateVelocity(Entity *e, bool *forces){
 		acceleration.setX(acceleration.getX() + ACCELERATION);
 	}
 	else{
-		e->setVelocity(Vector3D(0.0f, e->getVelocity().getY(), 0.0f));
+		e->setVelocity(Vector2D(0.0f, e->getVelocity().getY()));
 	}
 
-	Vector3D vel = e->getVelocity() + acceleration*timeStep;
+	Vector2D vel = e->getVelocity() + acceleration*timeStep;
+	//cout << "New v: " << vel.magnitude() << endl;
+	e->setVelocity(vel);
+}
+
+
+void PhysicsManager::UpdateVelocityDir(Entity *e, const Vector2D &dir){
+	Vector2D uDir = dir.makeUnitVector2D();
+	//cout << uDir << endl;
+	if(uDir.getX() > 0){
+		uDir.setX(ACCELERATION);
+	}
+	else if(uDir.getX() < 0){
+		uDir.setX(-ACCELERATION);
+	}
+	else{
+		e->setVelocity(Vector2D(0.0f, e->getVelocity().getY()));
+	}
+
+	if(uDir.getY() > 0){
+		uDir.setY(ACCELERATION);
+	}
+	else if(uDir.getY() < 0){
+		uDir.setX(-ACCELERATION);
+	}
+	else{
+		e->setVelocity(Vector2D(e->getVelocity().getX(), 0.0f));
+	}
+
+	Vector2D vel = e->getVelocity() + uDir*timeStep;
 	//cout << "New v: " << vel.magnitude() << endl;
 	e->setVelocity(vel);
 }
 
 
 void PhysicsManager::UpdateEntityPos(Entity *e){
-	Vector3D pos = e->getPosition() + e->getVelocity()*timeStep;
+	Vector2D pos = e->getPosition() + e->getVelocity()*timeStep;
 	e->updatePos(pos);
 	e->updateTile();
 }
@@ -85,10 +114,52 @@ bool PhysicsManager::IsEntityCollidingWithEntity(Entity *colliding, Entity *e){
 }
 
 
-void PhysicsManager::handleEntityCollision(Entity *eHitting, Entity *eHit, bool *forces){
-	UpdateVelocity(eHitting, forces);
-	UpdateVelocity(eHit, forces);
+void PhysicsManager::handleEntityCollision(Entity *eHitting, Entity *eHit){
+	Vector2D normal = eHitting->getVelocity().makeUnitVector2D();
+	Vector2D netVelocity = eHitting->getVelocity() - eHit->getVelocity();//eHit->getVelocity() - eHitting->getVelocity();
+
+	Vector2D normalVelocity = normal * Vector2D::dotProduct(netVelocity, normal);
+
+
+	float jNumerator = -(1 + ELASTICITY) * Vector2D::dotProduct(netVelocity, normal);
+	float jDenominator = Vector2D::dotProduct(normal, (normal * ((1.0f / eHitting->getMass()) + (1.0f / eHit->getMass()))));
+
+	if(jDenominator <= 0.0f){
+		return;
+	}
+
+	float J = jNumerator / jDenominator;
+
+	eHitting->setVelocity(eHitting->getVelocity() + (normal * (J / eHitting->getMass())));
+	eHit->setVelocity(eHit->getVelocity() - (normal * (J / eHit->getMass())));
+
+
+	UpdateEntityPos(eHit);
+	UpdateEntityPos(eHitting);
+
+	
+	
+}
+
+
+void PhysicsManager::handleWallCollision(Entity *eHitting){
+	Vector2D normal = eHitting->getVelocity().makeUnitVector2D();
+	Vector2D netVelocity = eHitting->getVelocity();
+
+	Vector2D normalVelocity = normal * Vector2D::dotProduct(netVelocity, normal);
+
+
+	float jNumerator = -(1 + ELASTICITY) * Vector2D::dotProduct(netVelocity, normal);
+	float jDenominator = Vector2D::dotProduct(normal, (normal * ((1.0f / eHitting->getMass()) + 1.0f)));
+
+	if(jDenominator <= 0.0f){
+		return;
+	}
+
+	float J = jNumerator / jDenominator;
+
+	eHitting->setVelocity((normal * (J / eHitting->getMass())));
 
 	UpdateEntityPos(eHitting);
-	UpdateEntityPos(eHit);
+	cout << "WALL" << endl;
 }
