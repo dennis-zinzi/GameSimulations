@@ -72,7 +72,7 @@ vector<PathNode*> Map::GetMapAsPathNodes() const{
 		for(int j = 0; j < TILES_IN_ROW; j++){
 			Tile t = tiles[i][j];
 
-			PathNode *node = new PathNode(n, t.GetCenter());
+			PathNode *node = new PathNode(n, t.GetCenter(), t.GetType());
 			if(t.GetType() == TileType::WALL){
 				node->bIsPassable = false;
 			}

@@ -1,15 +1,16 @@
 #include "Entity.h"
 
-Entity::Entity(Map *map, float mass){
+Entity::Entity(SDL_Texture *tex, Map *map, float mass){
 	pos = Vector2D(0.0f, 0.0f);
 	this->mass = mass;
 	
 	win = false;
 	this->map = map;
+	this->tex = tex;
 	currentIndex = 0;
 }
 
-Entity::Entity(const Vector2D &v, Map *map, float mass){
+Entity::Entity(const Vector2D &v, SDL_Texture *tex, Map *map, float mass){
 	pos = v;
 	
 	//Set tile
@@ -17,18 +18,20 @@ Entity::Entity(const Vector2D &v, Map *map, float mass){
 
 	this->mass = mass;
 	this->map = map;
+	this->tex = tex;
 	
 	win = false;
 	currentIndex = 0;
 }
 
-Entity::Entity(float x, float y, Map *map, float mass){
+Entity::Entity(float x, float y, SDL_Texture *tex, Map *map, float mass){
 	pos = Vector2D(x, y);
 	
 	currTile = map->GetTiles()[(int)pos.getX() / TILE_LENGTH][(int)pos.getY() / TILE_LENGTH];
 
 	this->map = map;
 	this->mass = mass;
+	this->tex = tex;
 	win = false;
 	currentIndex = 0;
 }

@@ -1,5 +1,10 @@
-#include "Map.h"
+#pragma once
+
+#include "common.h"
+
+#include "PathNode.h"
 #include "Vector2D.h"
+
 #include <vector>
 #include <iostream>
 #include <algorithm>

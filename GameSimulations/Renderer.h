@@ -29,15 +29,12 @@ struct Texture{
 
 class Renderer{
 	public:
-		Renderer();
+		Renderer(Map *map);
 		~Renderer();
 
-		bool CheckInputs();
-		void RenderScene(float msec);
-		void CreateEntities();
-		void InitJenkinsSquad();
+		void RenderScene(float msec, vector<Entity*> entities, Entity *player);
 
-		void RenderEntity(Entity *e, string texfile);
+		void RenderEntity(Entity *e);
 
 		SDL_Texture* LoadTex(string texfile);
 
@@ -48,18 +45,9 @@ class Renderer{
 		SDL_Surface *screen;
 		Map *map;
 
-		//Player character
-		Entity *player;
-		//AIs
-		vector<Entity*> ais;
-		BoidFlock *flock;
-
 		vector<Texture> textures;
 
-		SDL_Texture *playerTex;
-		SDL_Texture *aiTex;
-		PhysicsManager *p;
-
+		//Draws map of tiles
 		void DrawMap();
 		
 };

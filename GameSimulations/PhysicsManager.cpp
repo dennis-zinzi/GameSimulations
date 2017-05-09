@@ -161,5 +161,4 @@ void PhysicsManager::handleWallCollision(Entity *eHitting){
 	eHitting->setVelocity((normal * (J / eHitting->getMass())));
 
 	UpdateEntityPos(eHitting);
-	cout << "WALL" << endl;
 }

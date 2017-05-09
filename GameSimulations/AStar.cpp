@@ -5,12 +5,10 @@
 */
 vector<Vector2D> AStar::GetAStarPath(const Vector2D &StartPos, const Vector2D &EndPos, vector<PathNode*> &NodeMap){
 	//Get start node (AI)
-	PathNode *start = GetClosestNode(StartPos, NodeMap);//GetNodeWithXY(StartPos.getX(), StartPos.getY(), NodeMap);//
-	cout << (start ? start->Position : Vector2D()) << " vs" << StartPos << endl;
+	PathNode *start = GetClosestNode(StartPos, NodeMap);
 
 	//Get end node (Goal)
-	PathNode *end = GetClosestNode(EndPos, NodeMap);//GetNodeWithXY(EndPos.getX(), EndPos.getY(), NodeMap);//
-	cout << (end ? end->Position : Vector2D()) << " vs" << EndPos << endl;
+	PathNode *end = GetClosestNode(EndPos, NodeMap);
 
 
 	//Check Nodes actually exist
@@ -56,7 +54,7 @@ bool AStar::AStarAlgorithm(PathNode *StartNode, PathNode *FinalNode, vector<Path
 	}
 
 	//Initialization
-	float G = CostToMove(StartNode->Position, StartNode->Position),
+	float G = CostToMove(StartNode->Position, StartNode->Position) * StartNode->GetTerrainCost(),
 		H = HeuristicCost(StartNode->Position, FinalNode->Position);
 
 	StartNode->Cost = G + H;
@@ -127,7 +125,7 @@ bool AStar::AStarAlgorithm(PathNode *StartNode, PathNode *FinalNode, vector<Path
 			}
 
 			//Recalculate Cost to reach node (Add G cost of current node)
-			const int cost = GCostCurrent + CostToMove(Current->Position, Successor->Position) + HeuristicCost(Successor->Position, FinalNode->Position);
+			const int cost = GCostCurrent + (CostToMove(Current->Position, Successor->Position)*Successor->GetTerrainCost()) + HeuristicCost(Successor->Position, FinalNode->Position);
 
 			//If Node already in open list with a cheaper cost, then ignore
 			auto itOpen = find(OpenList.begin(), OpenList.end(), Successor);

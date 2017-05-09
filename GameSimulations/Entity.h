@@ -20,21 +20,24 @@ enum FORCE{
 
 class Entity {
 	public:
-		Entity(Map *map, float mass = 1.0f);
-		Entity(const Vector2D &v, Map *map, float mass = 1.0f);
-		Entity(float x, float y, Map *map, float mass = 1.0f);
+		Entity(SDL_Texture *tex, Map *map, float mass = 1.0f);
+		Entity(const Vector2D &v, SDL_Texture *tex, Map *map, float mass = 1.0f);
+		Entity(float x, float y, SDL_Texture *tex, Map *map, float mass = 1.0f);
 
-		
+		//Updates Entity's position
 		void updatePos(const Vector2D &pos);
 
+		//Position getter
 		inline Vector2D getPosition(){
 			return pos;
 		}
 
+		//Velocity getter
 		inline Vector2D getVelocity(){
 			return velocity;
 		}
 
+		//Velocity setter
 		void setVelocity(Vector2D vel);
 
 		
@@ -62,7 +65,7 @@ class Entity {
 		}
 
 
-
+		//Returns Entity's mass
 		inline float getMass() const{
 			return mass;
 		}
@@ -78,9 +81,12 @@ class Entity {
 			//cout << "Tile multi: " << currTile.GetTileMultiplier() << endl;
 		}
 
+
+		//Checks if Entity has entered the castle
 		inline bool getWin() const{
 			return win;
 		}
+
 
 		inline Tile getCurrentTile() const{
 			return currTile;
@@ -103,6 +109,14 @@ class Entity {
 			currentIndex = index;
 		}
 
+		inline SDL_Texture* getTexture() const{
+			return tex;
+		}
+
+		inline void setTexture(SDL_Texture *texture){
+			tex = texture;
+		}
+
 	private:
 		Vector2D pos;
 		Vector2D velocity;
@@ -110,6 +124,7 @@ class Entity {
 		Map *map;
 		float mass;
 		bool win;
+		SDL_Texture *tex;
 
 		vector<Vector2D> path;
 		int currentIndex;
