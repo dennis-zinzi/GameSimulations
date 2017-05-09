@@ -1,3 +1,6 @@
+/**
+* Manages Physicis updates of Entities
+*/
 #pragma once
 
 #include "Entity.h"

@@ -1,3 +1,6 @@
+/**
+* Manages Flockign properties of Entities
+*/
 #pragma once
 
 #include "Entity.h"

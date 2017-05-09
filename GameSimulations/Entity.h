@@ -1,10 +1,12 @@
+/**
+* Representation of physical Entity
+*/
 #pragma once
 
 #include "common.h"
 #include "Vector2D.h"
 #include "Tile.h"
 #include "Map.h"
-//#include "PhysicsManager.h"
 
 #include <vector>
 

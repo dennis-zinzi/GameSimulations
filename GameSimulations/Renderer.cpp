@@ -11,6 +11,7 @@ Renderer::Renderer(Map *map){
 	screen = SDL_GetWindowSurface(window);
 
 	this->map = map;
+	lastUpdate = SDL_GetTicks();
 }
 
 Renderer::~Renderer(){
@@ -50,13 +51,6 @@ void Renderer::RenderScene(float msec, vector<Entity*> entities, Entity *player)
 
 	//SDL update render	
 	SDL_RenderPresent(renderer);
-
-	//cout << "T: " << 1000/FRAME_RATE << " FPS: " << (SDL_GetTicks() - msec) << endl;
-
-	//Cap frame rate at 60 FPS
-	if(1000 / FRAME_RATE > SDL_GetTicks() - msec){
-		SDL_Delay((Uint32)((1000 / FRAME_RATE) - (SDL_GetTicks() - msec)));
-	}
 }
 
 void Renderer::DrawMap(){

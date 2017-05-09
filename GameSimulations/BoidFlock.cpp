@@ -9,10 +9,10 @@ BoidFlock::BoidFlock(vector<Entity*> boids, Entity *player){
 
 
 Vector2D BoidFlock::UpdateBoid(Entity *e){
-	Vector2D center = CalculateBoidCenter(e),
-		separation = CalculateBoidSeperation(e),
+	Vector2D center = CalculateBoidCenter(e);
+		/*separation = CalculateBoidSeperation(e),
 		vel = CalculateBoidVelocity(e),
-		tendency = TendToPlayer(e);
+		tendency = TendToPlayer(e);*/
 	
 	if(player){
 		if(Vector2D::dist(e->getPosition(), player->getPosition()) > 20.0f){

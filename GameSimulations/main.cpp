@@ -17,7 +17,7 @@ int main(int argc, char **argv){
 	float msec = SDL_GetTicks();
 
 	while(running){
-		msec = SDL_GetTicks() - msec;
+		msec = SDL_GetTicks();
 		running = game.CheckInputs();//renderer->CheckInputs();
 		game.UpdateEntities();
 		game.RenderScene(msec);

@@ -134,9 +134,6 @@ bool AStar::AStarAlgorithm(PathNode *StartNode, PathNode *FinalNode, vector<Path
 					continue;
 				}
 			}
-			/*if(OpenList.Contains(Successor) && Successor->Cost < cost){
-				continue;
-			}*/
 
 			//If Node already in closed list with a cheaper cost, then ignore
 			auto itClosed = find(ClosedList.begin(), ClosedList.end(), Successor);
@@ -145,9 +142,6 @@ bool AStar::AStarAlgorithm(PathNode *StartNode, PathNode *FinalNode, vector<Path
 					continue;
 				}
 			}
-			/*if(ClosedList.Contains(Successor) && Successor->Cost < cost){
-				continue;
-			}*/
 
 			//Otherwise update the child's cost, and set it's parent to current node
 			Successor->Cost = cost;
@@ -179,6 +173,180 @@ bool AStar::AStarAlgorithm(PathNode *StartNode, PathNode *FinalNode, vector<Path
 	cout << "NO POSSIBLE PATH, after " << num << " iterations" << endl;
 	return false;
 }
+
+
+vector<Vector2D> AStar::GetTacticalAStarPath(const Vector2D &StartPos, const Vector2D &EndPos, vector<PathNode*> &NodeMap){
+	//Get start node (AI)
+	PathNode *start = GetClosestNode(StartPos, NodeMap);
+
+	//Get end node (Goal)
+	PathNode *end = GetClosestNode(EndPos, NodeMap);
+
+
+	//Check Nodes actually exist
+	if(!start){
+		cout << "ERROR: Start node not found" << endl;
+		return vector<Vector2D>();
+	}
+	if(!end){
+		cout << "ERROR: End node not found" << endl;
+		return vector<Vector2D>();
+	}
+
+	if(start == end){
+		cout << "ERROR: Start node is end node" << endl;
+		return vector<Vector2D>();
+	}
+
+	//Create an Open and Closed List for the A* search
+	vector<PathNode*> OpenList,
+		ClosedList;
+
+	//Check Path available
+	if(AStarTacticalAlgorithm(start, end, NodeMap, OpenList, ClosedList)){
+		cout << "PATH IS AVAILABLE!!!" << endl;
+		return GeneratePath(start, end, ClosedList);
+	}
+	else{
+		cout << "ERROR MAKING PATH" << endl;
+		return vector<Vector2D>();
+	}
+}
+
+
+
+/**
+* A* Tactical Algorithm
+*/
+bool AStar::AStarTacticalAlgorithm(PathNode *StartNode, PathNode *FinalNode, vector<PathNode*> &NodeList, vector<PathNode*> &OpenList, vector<PathNode*> &ClosedList){
+	//Check there are actually nodes to traverse
+	if(NodeList.size() == 0){
+		cout << "NO NODES TO EXPLORE" << endl;
+		return false;
+	}
+
+	//Initialization
+	float G = CostToMove(StartNode->Position, StartNode->Position) * StartNode->GetTerrainCost(),
+		H = HeuristicCost(StartNode->Position, FinalNode->Position);
+
+	StartNode->Cost = G + H;
+	OpenList.push_back(StartNode);
+
+	//End Initialization
+
+	if(OpenList.size() == 0){
+		cout << "NOTHING IN OPEN LIST" << endl;
+		return false;
+	}
+
+	//Safety number to prevent infinite execution
+	int num = 0;
+
+	//While nodes to explore are available create path
+	while(OpenList.size() > 0 && num < MAX_ITERATIONS){
+		PathNode *Current = GetMinCostTacticalNode(OpenList);
+
+		//Check node is real
+		if(!Current){
+			cout << "NODE NOT FOUND" << endl;
+			return false;
+		}
+
+		//Remove current node from Open List (already explored)
+		auto it = find(OpenList.begin(), OpenList.end(), Current);
+		if(it != OpenList.end()){
+			auto index = distance(OpenList.begin(), it);
+			OpenList.erase(it);
+		}
+		//OpenList.erase(Current);
+
+		//Check if Node has children, if not find them
+		if(Current->Connected.empty()){
+			bool isConnected = FindNodeConnections(Current, NodeList);
+
+			//Check node actually has connections, reject it if it doesn't
+			if(!isConnected){
+				cout << "NO CONNECTIONS TO NODE, ID: " << Current->ID << endl;
+				continue;
+			}
+		}
+
+		//Get G value of Current Node
+		const int GCostCurrent = Current->Cost - HeuristicCost(Current->Position, FinalNode->Position);
+
+		//Iterate through all of the connected nodes
+		for(int i = 0; i < Current->Connected.size(); i++){
+			//Get Child node
+			PathNode *Successor = GetMatchingNodeByID(Current->Connected[i], NodeList);
+			if(!Successor){
+				continue;
+			}
+
+			//If the child node is the goal, we have a winner
+			if(Successor->ID == FinalNode->ID){
+				cout << "WE HAVE A PATH" << endl;
+				Successor->Parent = Current;
+				ClosedList.push_back(Current);
+				return true;
+			}
+
+			//Check if node is actually possible to go through
+			if(!Successor->bIsPassable){
+				//Ignore if it isn't
+				continue;
+			}
+
+			//Recalculate Cost to reach node (Add G cost of current node)
+			const int cost = GCostCurrent + (CostToMove(Current->Position, Successor->Position)*Successor->GetTerrainCost()) + HeuristicCost(Successor->Position, FinalNode->Position);
+
+			//If Node already in open list with a cheaper cost, then ignore
+			auto itOpen = find(OpenList.begin(), OpenList.end(), Successor);
+			if(itOpen != OpenList.end()){
+				if(Successor->Cost < cost){
+					continue;
+				}
+			}
+
+			//If Node already in closed list with a cheaper cost, then ignore
+			auto itClosed = find(ClosedList.begin(), ClosedList.end(), Successor);
+			if(itClosed != ClosedList.end()){
+				if(Successor->Cost < cost){
+					continue;
+				}
+			}
+
+			//Otherwise update the child's cost, and set it's parent to current node
+			Successor->Cost = cost;
+			Successor->Parent = Current;
+
+			//If child not in open list, add it
+			auto itOpen2 = find(OpenList.begin(), OpenList.end(), Successor);
+			if(itOpen2 != OpenList.end()){
+				OpenList[distance(OpenList.begin(), itOpen2)] = Successor;
+			}
+			else{
+				OpenList.push_back(Successor);
+			}
+			num++;
+		}
+
+		//Add Current node to closed list
+		auto itClosed2 = find(ClosedList.begin(), ClosedList.end(), Current);
+		if(itClosed2 != ClosedList.end()){
+			ClosedList[distance(ClosedList.begin(), itClosed2)] = Current;
+		}
+		else{
+			ClosedList.push_back(Current);
+		}
+		num++;
+	}
+
+	//If reached here, no path exists to player
+	cout << "NO POSSIBLE PATH, after " << num << " iterations" << endl;
+	return false;
+}
+
+
 
 
 /**
@@ -293,6 +461,62 @@ PathNode* AStar::GetMinCostNode(const vector<PathNode*> &List){
 }
 
 
+PathNode* AStar::GetMinCostTacticalNode(const vector<PathNode*> &List){
+	PathNode *Min = List.size() > 0 ? List[0] : nullptr;
+	vector<PathNode*> CoveredBridge;
+	vector<PathNode*> Forest;
+
+
+	for(auto Node : List){
+		if(Node->Cost < Min->Cost){
+			Min = Node;
+		}
+		if(Node->terrain != OPEN && Node->terrain != RIVER && Node->terrain != BASE){
+			if(Node->terrain == COVERED || Node->terrain == BRIDGE){
+				CoveredBridge.push_back(Node);
+			}
+			if(Node->terrain == FOREST){
+				Forest.push_back(Node);
+			}
+		}
+	}
+
+	if((Min->terrain != OPEN && Min->terrain != RIVER && Min->terrain != BASE)
+		|| CoveredBridge.size() < 1 && Forest.size() < 1){
+		return Min;
+	}
+	else if(CoveredBridge.size() > 1){
+		PathNode *MinTact = CoveredBridge[0];
+		for(auto tac : CoveredBridge){
+			if(tac->Cost < MinTact->Cost){
+				MinTact = tac;
+			}
+		}
+		return MinTact;
+	}
+	else if(Forest.size() > 0){
+		PathNode *MinTact = Forest[0];
+		for(auto tac : Forest){
+			if(tac->Cost < MinTact->Cost){
+				MinTact = tac;
+			}
+		}
+		return MinTact;
+	}
+	/*else{
+		PathNode *MinTact = Tacticals[0];
+		for(auto tac : Tacticals){
+			if(tac->Cost < MinTact->Cost){
+				MinTact = tac;
+			}
+		}
+		return MinTact;
+	}*/
+
+	return Min;
+}
+
+
 PathNode* AStar::GetNodeWithXY(const float x, const float y, const vector<PathNode*> &List){
 	for(auto Node : List){
 		if(Node->Position.getX() == x && Node->Position.getY() == y){
@@ -326,6 +550,40 @@ PathNode* AStar::GetClosestNode(const Vector2D &Pos, const vector<PathNode*> &Li
 			Closest = Node;
 			dist = DistToNode;
 			
+		}
+
+	}
+
+	return Closest;
+}
+
+
+PathNode* AStar::GetClosestTacticalNode(const Vector2D &Pos, const vector<PathNode*> &List){
+	PathNode *Closest = List.size() > 0 ? List[0] : nullptr;
+
+	//Set large value as default smallest distance
+	float dist = 999999.0f;
+
+	for(auto Node : List){
+		if(!Node->bIsPassable){
+			continue;
+		}
+		if(Node->Position.getX() == Pos.getX()
+			&& Node->Position.getY() == Pos.getY()){
+			return Node;
+		}
+
+		if(Node->terrain != WALL && Node->terrain != GATE){
+			continue;
+		}
+
+		float DistToNode = abs(Vector2D::dist(Pos, Node->Position));
+		//cout << "NEW: " << Node->Position << " vs" << Pos << ";Dist " << DistToNode << endl;
+
+		if(DistToNode < dist){
+			Closest = Node;
+			dist = DistToNode;
+
 		}
 
 	}

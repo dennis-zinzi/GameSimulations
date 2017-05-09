@@ -1,3 +1,6 @@
+/**
+* Representation of single Map Node 
+*/
 #pragma once
 
 #include "Vector2D.h"

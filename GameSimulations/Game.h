@@ -1,3 +1,6 @@
+/**
+ * Manages Rendering and Physicis of Entities
+ */
 #pragma once
 
 #include "common.h"
@@ -36,5 +39,6 @@ class Game{
 
 		void CreateEntities();
 		void InitJenkinsSquad();
+		void InitTacticalSquad();
 
 };

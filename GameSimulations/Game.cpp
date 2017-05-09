@@ -26,7 +26,7 @@ void Game::UpdateEntities(){
 		if(e->getPath().empty() && flock != nullptr){
 			vel = flock->UpdateBoid(e);
 		}
-		else if(!e->getPath().empty()){
+		else if(!e->getPath().empty() && e->getCurrentIndex() < e->getPath().size() - 1){
 			vel = e->getPath()[e->getCurrentIndex() + 1] - e->getPosition();
 
 			if(Vector2D::dist(e->getPath()[e->getCurrentIndex() + 1], e->getPosition()) < 25.0f){
@@ -85,10 +85,10 @@ bool Game::CheckInputs(){
 							CreateEntities();
 							InitJenkinsSquad();
 							break;
-						//case SDLK_l:
-						//	CreateEntities();
-						//	InitTacticalSquad();
-						//	break;
+						case SDLK_l:
+							CreateEntities();
+							InitTacticalSquad();
+							break;
 						default:
 							break;
 					}
@@ -189,3 +189,12 @@ void Game::InitJenkinsSquad(){
 	}
 }
 
+void Game::InitTacticalSquad(){
+	for(auto e : entities){
+		//cout << AStar::GetClosestTacticalNode(e->getPosition(), map->GetMapAsPathNodes())->Position << endl;
+
+		e->setPath(AStar::GetTacticalAStarPath(e->getPosition(), 
+			AStar::GetClosestTacticalNode(e->getPosition(), map->GetMapAsPathNodes())->Position,
+			map->GetMapAsPathNodes()));
+	}
+}

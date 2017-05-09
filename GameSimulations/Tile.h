@@ -1,3 +1,6 @@
+/**
+* Representation of single tile in Map
+*/
 #pragma once
 
 #include "Vector2D.h"

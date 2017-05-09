@@ -1,3 +1,6 @@
+/**
+* Manages Rendering of Entities + Map
+*/
 #pragma once
 
 #include "common.h"
@@ -46,6 +49,8 @@ class Renderer{
 		Map *map;
 
 		vector<Texture> textures;
+
+		float lastUpdate;
 
 		//Draws map of tiles
 		void DrawMap();
