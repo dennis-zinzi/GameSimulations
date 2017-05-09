@@ -5,9 +5,13 @@
 */
 vector<Vector2D> AStar::GetAStarPath(const Vector2D &StartPos, const Vector2D &EndPos, vector<PathNode*> &NodeMap){
 	//Get start node (AI)
-	PathNode *start = GetClosestNode(StartPos, NodeMap);
-	//Get start node (Player)
-	PathNode *end = GetClosestNode(EndPos, NodeMap);
+	PathNode *start = GetClosestNode(StartPos, NodeMap);//GetNodeWithXY(StartPos.getX(), StartPos.getY(), NodeMap);//
+	cout << (start ? start->Position : Vector2D()) << " vs" << StartPos << endl;
+
+	//Get end node (Goal)
+	PathNode *end = GetClosestNode(EndPos, NodeMap);//GetNodeWithXY(EndPos.getX(), EndPos.getY(), NodeMap);//
+	cout << (end ? end->Position : Vector2D()) << " vs" << EndPos << endl;
+
 
 	//Check Nodes actually exist
 	if(!start){
@@ -21,10 +25,7 @@ vector<Vector2D> AStar::GetAStarPath(const Vector2D &StartPos, const Vector2D &E
 
 	if(start == end){
 		cout << "ERROR: Start node is end node" << endl;
-		vector<Vector2D> arr;
-		arr.push_back(start->Position);
-		arr.push_back(end->Position);
-		return arr;
+		return vector<Vector2D>();
 	}
 
 	//Create an Open and Closed List for the A* search
@@ -155,12 +156,24 @@ bool AStar::AStarAlgorithm(PathNode *StartNode, PathNode *FinalNode, vector<Path
 			Successor->Parent = Current;
 
 			//If child not in open list, add it
-			OpenList.push_back(Successor);
+			auto itOpen2 = find(OpenList.begin(), OpenList.end(), Successor);
+			if(itOpen2 != OpenList.end()){
+				OpenList[distance(OpenList.begin(), itOpen2)] = Successor;
+			}
+			else{
+				OpenList.push_back(Successor);
+			}
 			num++;
 		}
 
 		//Add Current node to closed list
-		ClosedList.push_back(Current);
+		auto itClosed2 = find(ClosedList.begin(), ClosedList.end(), Current);
+		if(itClosed2 != ClosedList.end()){
+			ClosedList[distance(ClosedList.begin(), itClosed2)] = Current;
+		}
+		else{
+			ClosedList.push_back(Current);
+		}
 		num++;
 	}
 
@@ -303,12 +316,18 @@ PathNode* AStar::GetClosestNode(const Vector2D &Pos, const vector<PathNode*> &Li
 		if(!Node->bIsPassable){
 			continue;
 		}
+		if(Node->Position.getX() == Pos.getX()
+			&& Node->Position.getY() == Pos.getY()){
+			return Node;
+		}
 
-		float DistToNode = abs(Vector2D::distance(Pos, Node->Position));
+		float DistToNode = abs(Vector2D::dist(Pos, Node->Position));
+		//cout << "NEW: " << Node->Position << " vs" << Pos << ";Dist " << DistToNode << endl;
 
 		if(DistToNode < dist){
 			Closest = Node;
 			dist = DistToNode;
+			
 		}
 
 	}
@@ -343,7 +362,7 @@ PathNode* AStar::GetClosestNeighborNode(const Vector2D &CurPos, const Vector2D &
 			continue;
 		}
 
-		float nodeDist = abs(Vector2D::distance(Successor->Position, GoPos));
+		float nodeDist = abs(Vector2D::dist(Successor->Position, GoPos));
 		if(nodeDist < dist){
 			dist = nodeDist;
 			winner = Successor;

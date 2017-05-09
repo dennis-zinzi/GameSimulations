@@ -1,10 +1,12 @@
 #include "Entity.h"
 
-Entity::Entity(float mass){
+Entity::Entity(Map *map, float mass){
 	pos = Vector2D(0.0f, 0.0f);
 	this->mass = mass;
 	
 	win = false;
+	this->map = map;
+	currentIndex = 0;
 }
 
 Entity::Entity(const Vector2D &v, Map *map, float mass){
@@ -17,6 +19,7 @@ Entity::Entity(const Vector2D &v, Map *map, float mass){
 	this->map = map;
 	
 	win = false;
+	currentIndex = 0;
 }
 
 Entity::Entity(float x, float y, Map *map, float mass){
@@ -27,6 +30,7 @@ Entity::Entity(float x, float y, Map *map, float mass){
 	this->map = map;
 	this->mass = mass;
 	win = false;
+	currentIndex = 0;
 }
 
 

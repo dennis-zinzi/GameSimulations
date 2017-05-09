@@ -65,7 +65,7 @@ class Vector2D{
 	//Calculate scalar/dot product of two Vector2Ds
 	static float dotProduct(const Vector2D &v1, const Vector2D &v2);
 	//Calculate distance between two Vector2Ds
-	static float distance(const Vector2D &v1, const Vector2D &v2);
+	static float dist(const Vector2D &v1, const Vector2D &v2);
 
 	//Vector3D functions
 	float magnitude() const;

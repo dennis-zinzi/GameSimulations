@@ -13,12 +13,22 @@ Vector2D BoidFlock::UpdateBoid(Entity *e){
 		separation = CalculateBoidSeperation(e),
 		vel = CalculateBoidVelocity(e),
 		tendency = TendToPlayer(e);
-		
-	if(Vector2D::distance(e->getPosition(), player->getPosition()) > 20.0f){
-		return center*-1.0f;// + separation + vel + tendency;
+	
+	if(player){
+		if(Vector2D::dist(e->getPosition(), player->getPosition()) > 20.0f){
+			return center*-1.0f;// + separation + vel + tendency;
+		}
+		else if(Vector2D::dist(e->getPosition(), player->getPosition()) < -20.0f){
+			return (center*1.0f);// + separation + vel + tendency) * -1.0;
+		}
 	}
-	else if(Vector2D::distance(e->getPosition(), player->getPosition()) < -20.0f){
-		return (center*1.0f);// + separation + vel + tendency) * -1.0;
+	else{
+		if(Vector2D::dist(e->getPosition(), playerPos) > 20.0f){
+			return center*-1.0f;// + separation + vel + tendency;
+		}
+		else if(Vector2D::dist(e->getPosition(), playerPos) < -20.0f){
+			return (center*1.0f);// + separation + vel + tendency) * -1.0;
+		}
 	}
 
 	return center*-1.0f;
@@ -28,7 +38,14 @@ Vector2D BoidFlock::UpdateBoid(Entity *e){
 
 /* Boid Rules */
 Vector2D BoidFlock::CalculateBoidCenter(Entity *e){
-	return (e->getPosition() - player->getPosition()) * BOID_COHESION;
+	if(player){
+		return (e->getPosition() - player->getPosition()) * BOID_COHESION;
+	}
+	else{
+		return (e->getPosition() - playerPos) * BOID_COHESION;
+	}
+	
+	//return e->getPosition() * BOID_COHESION;
 	//return (player->getPosition() - e->getPosition()) * BOID_COHESION;
 }
 
@@ -41,7 +58,7 @@ Vector2D BoidFlock::CalculateBoidSeperation(Entity *e){
 			continue;
 		}
 
-		if(abs(Vector2D::distance(b->getPosition(), e->getPosition())) < BOID_SEPARATION){
+		if(abs(Vector2D::dist(b->getPosition(), e->getPosition())) < BOID_SEPARATION){
 			separation -= b->getPosition() - e->getPosition();
 		}
 	}
@@ -76,5 +93,9 @@ void BoidFlock::LimitSpeed(Entity *e){
 
 
 Vector2D BoidFlock::TendToPlayer(Entity *e){
-	return (player->getPosition()) * GOAL_TEND;
+	if(player){
+		return (player->getPosition()) * GOAL_TEND;
+	}
+
+	return playerPos * GOAL_TEND;
 }

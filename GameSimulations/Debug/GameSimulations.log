@@ -1,20 +1,16 @@
-﻿Build started 09/05/2017 13:39:08.
+﻿Build started 09/05/2017 19:33:27.
      1>Project "H:\CSC3222\GameSimulations\GameSimulations\GameSimulations.vcxproj" on node 2 (Build target(s)).
      1>ClCompile:
-         C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\bin\CL.exe /c /I"H:\CSC3222\GameSimulations\SDL2-2.0.5\include" /I"H:\CSC3222\GameSimulations\SDL2-2.0.5\SDL2_image-2.0.1\include" /ZI /nologo /W3 /WX- /sdl /Od /Oy- /D _MBCS /Gm /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Zc:inline /Fo"Debug\\" /Fd"Debug\vc140.pdb" /Gd /TP /analyze- /errorReport:prompt Game.cpp Renderer.cpp main.cpp
+         C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\bin\CL.exe /c /I"H:\CSC3222\GameSimulations\SDL2-2.0.5\include" /I"H:\CSC3222\GameSimulations\SDL2-2.0.5\SDL2_image-2.0.1\include" /ZI /nologo /W3 /WX- /sdl /Od /Oy- /D _MBCS /Gm /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Zc:inline /Fo"Debug\\" /Fd"Debug\vc140.pdb" /Gd /TP /analyze- /errorReport:prompt Renderer.cpp
          Renderer.cpp
-     1>h:\csc3222\gamesimulations\gamesimulations\renderer.cpp(91): warning C4244: '=': conversion from 'float' to 'int', possible loss of data
-     1>h:\csc3222\gamesimulations\gamesimulations\renderer.cpp(92): warning C4244: '=': conversion from 'float' to 'int', possible loss of data
-     1>h:\csc3222\gamesimulations\gamesimulations\renderer.cpp(104): warning C4244: '=': conversion from 'float' to 'int', possible loss of data
-     1>h:\csc3222\gamesimulations\gamesimulations\renderer.cpp(105): warning C4244: '=': conversion from 'float' to 'int', possible loss of data
-     1>h:\csc3222\gamesimulations\gamesimulations\renderer.cpp(113): warning C4244: '=': conversion from 'float' to 'int', possible loss of data
+     1>h:\csc3222\gamesimulations\gamesimulations\renderer.cpp(65): warning C4244: '=': conversion from 'float' to 'int', possible loss of data
+     1>h:\csc3222\gamesimulations\gamesimulations\renderer.cpp(66): warning C4244: '=': conversion from 'float' to 'int', possible loss of data
      1>h:\csc3222\gamesimulations\gamesimulations\renderer.cpp(114): warning C4244: '=': conversion from 'float' to 'int', possible loss of data
-     1>h:\csc3222\gamesimulations\gamesimulations\renderer.cpp(214): warning C4244: '=': conversion from 'float' to 'int', possible loss of data
-     1>h:\csc3222\gamesimulations\gamesimulations\renderer.cpp(215): warning C4244: '=': conversion from 'float' to 'int', possible loss of data
-         Game.cpp
-         Generating Code...
-         Skipping... (no relevant changes detected)
-         main.cpp
+     1>h:\csc3222\gamesimulations\gamesimulations\renderer.cpp(115): warning C4244: '=': conversion from 'float' to 'int', possible loss of data
+     1>h:\csc3222\gamesimulations\gamesimulations\renderer.cpp(136): warning C4244: '=': conversion from 'float' to 'int', possible loss of data
+     1>h:\csc3222\gamesimulations\gamesimulations\renderer.cpp(137): warning C4244: '=': conversion from 'float' to 'int', possible loss of data
+     1>h:\csc3222\gamesimulations\gamesimulations\renderer.cpp(241): warning C4244: '=': conversion from 'float' to 'int', possible loss of data
+     1>h:\csc3222\gamesimulations\gamesimulations\renderer.cpp(242): warning C4244: '=': conversion from 'float' to 'int', possible loss of data
        Link:
          C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\bin\link.exe /ERRORREPORT:PROMPT /OUT:"H:\CSC3222\GameSimulations\Debug\GameSimulations.exe" /INCREMENTAL /NOLOGO "H:\CSC3222\GameSimulations\SDL2-2.0.5\lib\x86\SDL2.lib" "H:\CSC3222\GameSimulations\SDL2-2.0.5\lib\x86\SDL2main.lib" "H:\CSC3222\GameSimulations\SDL2-2.0.5\SDL2_image-2.0.1\lib\x86\SDL2_image.lib" kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /Debug /PDB:"H:\CSC3222\GameSimulations\Debug\GameSimulations.pdb" /SUBSYSTEM:CONSOLE /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"H:\CSC3222\GameSimulations\Debug\GameSimulations.lib" /MACHINE:X86 Debug\AStar.obj
          Debug\BoidFlock.obj
@@ -33,4 +29,4 @@
 
 Build succeeded.
 
-Time Elapsed 00:00:04.97
+Time Elapsed 00:00:03.91

@@ -8,7 +8,7 @@
 
 using std::vector;
 
-#define BOID_COHESION 0.05f
+#define BOID_COHESION 0.1f
 #define BOID_SEPARATION 1.0f
 #define ALIGNMENT_FACTOR 0.05f
 #define GOAL_TEND 0.5f
@@ -19,6 +19,13 @@ class BoidFlock{
 		BoidFlock(vector<Entity*> boids, Entity *player);
 
 		Vector2D UpdateBoid(Entity *e);
+		inline void SetPlayerPos(Vector2D pos){
+			playerPos = pos;
+		}
+
+		inline void NullPlayer(){
+			player = nullptr;
+		}
 
 	private:
 		Vector2D CalculateBoidCenter(Entity *e);
@@ -29,4 +36,5 @@ class BoidFlock{
 
 		vector<Entity*> boids;
 		Entity *player;
+		Vector2D playerPos;
 };

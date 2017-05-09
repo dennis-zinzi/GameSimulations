@@ -20,7 +20,7 @@ enum FORCE{
 
 class Entity {
 	public:
-		Entity(float mass = 1.0f);
+		Entity(Map *map, float mass = 1.0f);
 		Entity(const Vector2D &v, Map *map, float mass = 1.0f);
 		Entity(float x, float y, Map *map, float mass = 1.0f);
 
@@ -86,6 +86,23 @@ class Entity {
 			return currTile;
 		}
 
+
+		inline void setPath(vector<Vector2D> path){
+			this->path = path;
+		}
+
+		inline vector<Vector2D> getPath() const{
+			return path;
+		}
+
+		inline int getCurrentIndex() const{
+			return currentIndex;
+		}
+
+		inline void setCurrentIndex(int index){
+			currentIndex = index;
+		}
+
 	private:
 		Vector2D pos;
 		Vector2D velocity;
@@ -93,4 +110,7 @@ class Entity {
 		Map *map;
 		float mass;
 		bool win;
+
+		vector<Vector2D> path;
+		int currentIndex;
 };

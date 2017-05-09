@@ -14,7 +14,7 @@ Renderer::Renderer(){
 
 	map = new Map();
 	player = new Entity(30, 30, map);
-	smart = new Entity(720, 40, map);
+
 	playerTex = LoadTex("player_f.png");
 	aiTex = LoadTex("ai_f.png");
 }
@@ -45,6 +45,10 @@ void Renderer::CreateEntities(){
 		}
 	}
 
+	if(!player){
+		player = new Entity(map);
+	}
+
 	if(left){
 		Vector3D pos(Utilities::RandomFloat(0.0f, 80.0f), Utilities::RandomFloat(0.0f, 80.0f), 0);
 		player->updatePos(pos);
@@ -54,11 +58,15 @@ void Renderer::CreateEntities(){
 		player->updatePos(pos);
 	}
 
-	flock = new BoidFlock(ais, player);
 }
 
 void Renderer::RenderEntity(Entity *e, string texfile){
-
+	SDL_Rect rect;
+	rect.x = e->getXPosition();
+	rect.y = e->getYPosition();
+	rect.h = ENTITY_HEIGHT;
+	rect.w = ENTITY_WIDTH;
+	SDL_RenderCopy(renderer, LoadTex(texfile), nullptr, &rect);
 }
 
 
@@ -78,7 +86,22 @@ void Renderer::RenderScene(float msec){
 			indicies.push_back(i);
 			continue;
 		}
-		Vector2D vel = flock->UpdateBoid(ai);
+
+		Vector2D vel;
+
+		if(ai->getPath().empty() && flock != nullptr){
+			vel = flock->UpdateBoid(ai);
+		}
+		else if(!ai->getPath().empty()){
+			vel = ai->getPath()[ai->getCurrentIndex() + 1] - ai->getPosition();
+
+			if(Vector2D::dist(ai->getPath()[ai->getCurrentIndex() + 1], ai->getPosition()) < 25.0f){
+				cout << ai->getCurrentIndex() + 1 << "/" << ai->getPath().size() << endl;
+				ai->setCurrentIndex(ai->getCurrentIndex() + 1);
+				//Decelerate AI to make them turn
+				p->UpdateVelocityDir(ai, Vector2D());
+			}
+		}
 
 		if (ai->getCurrentTile().GetType() == TileType::WALL) {
 			p->handleWallCollision(ai);
@@ -99,23 +122,25 @@ void Renderer::RenderScene(float msec){
 		ais.erase(ais.begin() + index);
 	}
 
-	//Render player
-	SDL_Rect rect;
-	rect.x = player->getXPosition();
-	rect.y = player->getYPosition();
-	rect.h = 20;
-	rect.w = 15;
+	if(player && player->getWin()){
+		if(flock){
+			flock->SetPlayerPos(player->getPosition());
+			flock->NullPlayer();
+			delete player;
+			player = nullptr;
+		}
+	}
+	else if(player){
+		//Render player
+		SDL_Rect rect;
+		rect.x = player->getXPosition();
+		rect.y = player->getYPosition();
+		rect.h = ENTITY_HEIGHT;
+		rect.w = ENTITY_WIDTH;
 
-	SDL_RenderCopy(renderer, playerTex, nullptr, &rect);
+		SDL_RenderCopy(renderer, playerTex, nullptr, &rect);
+	}
 
-	//Render smart
-	SDL_Rect sRect;
-	sRect.x = smart->getXPosition();
-	sRect.y = smart->getYPosition();
-	sRect.h = 20;
-	sRect.w = 15;
-
-	SDL_RenderCopy(renderer, aiTex, nullptr, &sRect);
 
 	//SDL update render	
 	SDL_RenderPresent(renderer);
@@ -143,8 +168,12 @@ bool Renderer::CheckInputs(){
 						return false;
 					case SDLK_k:
 						CreateEntities();
+						flock = new BoidFlock(ais, player);
 						break;
-
+					case SDLK_j:
+						CreateEntities();
+						InitJenkinsSquad();
+						break;
 					default: 
 						break;
 				}
@@ -163,45 +192,43 @@ bool Renderer::CheckInputs(){
 	// Move player
 	if((keyboard_state[SDL_SCANCODE_W] && !keyboard_state[SDL_SCANCODE_S])
 		|| (keyboard_state[SDL_SCANCODE_UP] && !keyboard_state[SDL_SCANCODE_DOWN])){
-		//player->updateYPos(-0.1f);
+		//Apply force upwards
 		directions[UP] = true;
+
 		playerTex = LoadTex("player_b.png");
 	}
 	else if((keyboard_state[SDL_SCANCODE_S] && !keyboard_state[SDL_SCANCODE_W])
 		|| (keyboard_state[SDL_SCANCODE_DOWN] && !keyboard_state[SDL_SCANCODE_UP])){
-		//player->updateYPos(0.1f);
+		//Apply force downwards
 		directions[DOWN] = true;
+
 		playerTex = LoadTex("player_f.png");
 	}
 
 	if((keyboard_state[SDL_SCANCODE_D] && !keyboard_state[SDL_SCANCODE_A])
 		|| (keyboard_state[SDL_SCANCODE_RIGHT] && !keyboard_state[SDL_SCANCODE_LEFT])){
-		//player->updateXPos(0.1f);
+		//Apply force rightwards
 		directions[RIGHT] = true;
 		playerTex = LoadTex("player_r.png");
 	}
 	else if((keyboard_state[SDL_SCANCODE_A] && !keyboard_state[SDL_SCANCODE_D])
 		|| (keyboard_state[SDL_SCANCODE_LEFT] && !keyboard_state[SDL_SCANCODE_RIGHT])){
-		//player->updateXPos(-0.1f);
+		//Apply force leftwards
 		directions[LEFT] = true;
 		playerTex = LoadTex("player_l.png");
 	}
 
 
+	if(player){
+		if(player->getCurrentTile().GetType() == TileType::WALL){
+			p->handleWallCollision(player);
+		}
 
-	if(player->getCurrentTile().GetType() == TileType::WALL){
-		p->handleWallCollision(player);
+
+		p->UpdateVelocity(player, directions);
+		p->UpdateEntityPos(player);
 	}
 
-
-	p->UpdateVelocity(player, directions);
-	p->UpdateEntityPos(player);
-	
-	/*if(n > 0){
-		cout << "Colliding: " << n << endl << endl;
-	}*/
-
-	//cout << "Player Pos: " << player->getPosition() << endl;
 	return true;
 }
 
@@ -299,4 +326,11 @@ SDL_Texture* Renderer::LoadTex(string texfile){
 
 	textures.push_back(Texture {texfile, texture});
 	return texture;
+}
+
+
+void Renderer::InitJenkinsSquad(){
+	for(auto ai : ais){
+		ai->setPath(AStar::GetAStarPath(ai->getPosition(), Vector2D(440.0f, 760.0f), map->GetMapAsPathNodes()));
+	}
 }

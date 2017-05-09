@@ -35,6 +35,7 @@ class Renderer{
 		bool CheckInputs();
 		void RenderScene(float msec);
 		void CreateEntities();
+		void InitJenkinsSquad();
 
 		void RenderEntity(Entity *e, string texfile);
 
@@ -46,8 +47,10 @@ class Renderer{
 		SDL_GLContext context;
 		SDL_Surface *screen;
 		Map *map;
+
+		//Player character
 		Entity *player;
-		Entity *smart;
+		//AIs
 		vector<Entity*> ais;
 		BoidFlock *flock;
 

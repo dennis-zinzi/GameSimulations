@@ -424,11 +424,11 @@ Vector2D Vector2D::operator*(const Vector2D &v) const{
 	return Vector2D(xProd, yProd);
 }
 
-float Vector2D::distance(const Vector2D &v1, const Vector2D &v2){
+float Vector2D::dist(const Vector2D &v1, const Vector2D &v2){
 	float dX = v2.getX() - v1.getX(),
-		dY = v2.getY() - v1.getX();
+		dY = v2.getY() - v1.getY();
 
-	return sqrt((dX*dX) + (dY + dY));
+	return sqrtf((dX*dX) + (dY*dY));
 }
 
 
