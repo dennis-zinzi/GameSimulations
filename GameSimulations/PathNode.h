@@ -24,6 +24,7 @@ class PathNode{
 		TileType terrain;
 
 		float GetTerrainCost();
+		float GetTacticalTerrainCost();
 
 
 		inline bool operator==(const PathNode &rhs) const{

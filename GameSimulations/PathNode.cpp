@@ -36,3 +36,25 @@ float PathNode::GetTerrainCost(){
 			return 1.0f;
 	}
 }
+
+float PathNode::GetTacticalTerrainCost(){
+	switch(terrain){
+		case BASE:
+		case COVERED:
+		case BRIDGE:
+		case CASTLE:
+			return 1.0f;
+		case FOREST:
+			return 1.5f;
+		case OPEN:
+		case RIVER:
+			return 1.65f;
+		case GATE:
+			return 1.85f;
+			//Used for impulse
+		case WALL:
+			return 10.0f;
+		default:
+			return 1.0f;
+	}
+}

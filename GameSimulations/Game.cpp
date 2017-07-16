@@ -78,15 +78,15 @@ bool Game::CheckInputs(){
 						case SDLK_x:
 							return false;
 						case SDLK_k:
-							CreateEntities();
+							CreateEntities(true);
 							flock = new BoidFlock(entities, player);
 							break;
 						case SDLK_j:
-							CreateEntities();
+							CreateEntities(false);
 							InitJenkinsSquad();
 							break;
 						case SDLK_l:
-							CreateEntities();
+							CreateEntities(false);
 							InitTacticalSquad();
 							break;
 						default:
@@ -147,7 +147,7 @@ bool Game::CheckInputs(){
 	return true;
 }
 
-void Game::CreateEntities(){
+void Game::CreateEntities(bool createPlayer){
 	entities.clear();
 
 	//Randomly select what base to spawn entities in
@@ -166,20 +166,21 @@ void Game::CreateEntities(){
 	}
 
 	//Create player if doesn't exist
-	if(!player){
-		player = new Entity(renderer->LoadTex("player_f.png"), map);
-	}
+	if(createPlayer){
+		if(!player){
+			player = new Entity(renderer->LoadTex("player_f.png"), map);
+		}
 
-	//Set player position in randomly selected base
-	if(left){
-		Vector2D pos(Utilities::RandomFloat(BASE1_MIN_X, BASE1_MAX_X), Utilities::RandomFloat(BASE_MIN_Y, BASE_MAX_Y));
-		player->updatePos(pos);
+		//Set player position in randomly selected base
+		if(left){
+			Vector2D pos(Utilities::RandomFloat(BASE1_MIN_X, BASE1_MAX_X), Utilities::RandomFloat(BASE_MIN_Y, BASE_MAX_Y));
+			player->updatePos(pos);
+		}
+		else{
+			Vector2D pos(Utilities::RandomFloat(BASE2_MIN_X, BASE2_MAX_X), Utilities::RandomFloat(BASE_MIN_Y, BASE_MAX_Y));
+			player->updatePos(pos);
+		}
 	}
-	else{
-		Vector2D pos(Utilities::RandomFloat(BASE2_MIN_X, BASE2_MAX_X), Utilities::RandomFloat(BASE_MIN_Y, BASE_MAX_Y));
-		player->updatePos(pos);
-	}
-
 }
 
 

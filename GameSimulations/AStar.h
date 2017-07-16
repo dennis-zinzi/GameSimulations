@@ -49,7 +49,6 @@ class AStar{
 		static vector<Vector2D> GeneratePath(PathNode *StartNode, PathNode *FinalNode, const vector<PathNode*> &ClosedList);
 
 		static PathNode* GetMinCostNode(const vector<PathNode*> &List);
-		static PathNode* GetMinCostTacticalNode(const vector<PathNode*> &List);
 		static PathNode* GetMatchingNodeByID(const int ID, const vector<PathNode*> &List);
 		static PathNode* GetNodeWithXY(const float x, const float y, const vector<PathNode*> &List);
 

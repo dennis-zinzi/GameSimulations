@@ -37,7 +37,7 @@ class Game{
 		PhysicsManager *physics;
 		Renderer *renderer;
 
-		void CreateEntities();
+		void CreateEntities(bool createPlayer);
 		void InitJenkinsSquad();
 		void InitTacticalSquad();
 

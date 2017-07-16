@@ -226,7 +226,7 @@ bool AStar::AStarTacticalAlgorithm(PathNode *StartNode, PathNode *FinalNode, vec
 	}
 
 	//Initialization
-	float G = CostToMove(StartNode->Position, StartNode->Position) * StartNode->GetTerrainCost(),
+	float G = CostToMove(StartNode->Position, StartNode->Position) * StartNode->GetTacticalTerrainCost(),
 		H = HeuristicCost(StartNode->Position, FinalNode->Position);
 
 	StartNode->Cost = G + H;
@@ -244,7 +244,7 @@ bool AStar::AStarTacticalAlgorithm(PathNode *StartNode, PathNode *FinalNode, vec
 
 	//While nodes to explore are available create path
 	while(OpenList.size() > 0 && num < MAX_ITERATIONS){
-		PathNode *Current = GetMinCostTacticalNode(OpenList);
+		PathNode *Current = GetMinCostNode(OpenList);
 
 		//Check node is real
 		if(!Current){
@@ -297,7 +297,7 @@ bool AStar::AStarTacticalAlgorithm(PathNode *StartNode, PathNode *FinalNode, vec
 			}
 
 			//Recalculate Cost to reach node (Add G cost of current node)
-			const int cost = GCostCurrent + (CostToMove(Current->Position, Successor->Position)*Successor->GetTerrainCost()) + HeuristicCost(Successor->Position, FinalNode->Position);
+			const int cost = GCostCurrent + (CostToMove(Current->Position, Successor->Position)*Successor->GetTacticalTerrainCost()) + HeuristicCost(Successor->Position, FinalNode->Position);
 
 			//If Node already in open list with a cheaper cost, then ignore
 			auto itOpen = find(OpenList.begin(), OpenList.end(), Successor);
@@ -461,62 +461,6 @@ PathNode* AStar::GetMinCostNode(const vector<PathNode*> &List){
 }
 
 
-PathNode* AStar::GetMinCostTacticalNode(const vector<PathNode*> &List){
-	PathNode *Min = List.size() > 0 ? List[0] : nullptr;
-	vector<PathNode*> CoveredBridge;
-	vector<PathNode*> Forest;
-
-
-	for(auto Node : List){
-		if(Node->Cost < Min->Cost){
-			Min = Node;
-		}
-		if(Node->terrain != OPEN && Node->terrain != RIVER && Node->terrain != BASE){
-			if(Node->terrain == COVERED || Node->terrain == BRIDGE){
-				CoveredBridge.push_back(Node);
-			}
-			if(Node->terrain == FOREST){
-				Forest.push_back(Node);
-			}
-		}
-	}
-
-	if((Min->terrain != OPEN && Min->terrain != RIVER && Min->terrain != BASE)
-		|| CoveredBridge.size() < 1 && Forest.size() < 1){
-		return Min;
-	}
-	else if(CoveredBridge.size() > 1){
-		PathNode *MinTact = CoveredBridge[0];
-		for(auto tac : CoveredBridge){
-			if(tac->Cost < MinTact->Cost){
-				MinTact = tac;
-			}
-		}
-		return MinTact;
-	}
-	else if(Forest.size() > 0){
-		PathNode *MinTact = Forest[0];
-		for(auto tac : Forest){
-			if(tac->Cost < MinTact->Cost){
-				MinTact = tac;
-			}
-		}
-		return MinTact;
-	}
-	/*else{
-		PathNode *MinTact = Tacticals[0];
-		for(auto tac : Tacticals){
-			if(tac->Cost < MinTact->Cost){
-				MinTact = tac;
-			}
-		}
-		return MinTact;
-	}*/
-
-	return Min;
-}
-
-
 PathNode* AStar::GetNodeWithXY(const float x, const float y, const vector<PathNode*> &List){
 	for(auto Node : List){
 		if(Node->Position.getX() == x && Node->Position.getY() == y){
@@ -573,7 +517,10 @@ PathNode* AStar::GetClosestTacticalNode(const Vector2D &Pos, const vector<PathNo
 			return Node;
 		}
 
-		if(Node->terrain != WALL && Node->terrain != GATE){
+		/*if(Node->terrain != WALL && Node->terrain != GATE){
+			continue;
+		}*/
+		if(Node->terrain != CASTLE){
 			continue;
 		}
 
