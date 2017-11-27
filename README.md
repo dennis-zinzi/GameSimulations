@@ -44,11 +44,7 @@ where J is the impulse force, calculated using:
 
 ### Flocking Behavior
 While the player entity moves around the Map, the other AI entities must follow it to be able to reach the castle alongside the 
-user-controlled entity. A very simple version of Reynolds' flocking algorithm is used here to ensure the other entities are following you.
-Instead of following all three flocking properties (cohesion, alignment, and separation), only the cohesion property is used to make the 
-AIs stay within range of the player.
-
-*NOTE: The other flocking properties are present in the code, but were unsuccessful in running, thusly were commented out.*
+user-controlled entity. Reynolds' flocking algorithm is used here to ensure the other entities are following you, while adhering to the  three flocking properties: cohesion, separation, and alignment. The cohesion property ensures the entities are within range of the player at all times. Seperation keeps the entities from overlapping each other by maintaining a certain distance from one another. Finally, alignment keeps the velocities of the entities consistent amongst them.
 
 ### A* Pathfinding Implementation
 The secondary focus of the code is generating two seperate implementations of the A\*, or A-Star, search pathfinding algorithm in order 
@@ -71,4 +67,4 @@ There are three simulations to execute, triggered by pressing the following keys
 
 ## Other
 #### Video
-Recording of the engine running can be found at: https://dzinzi.tinytake.com/sf/MTc5MTI0NV81ODQ4MDk3
+Recording of the engine running can be found at: http://www.denniszinzi.com/portfolio/gamesimulations
