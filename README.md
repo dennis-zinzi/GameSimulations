@@ -9,7 +9,7 @@ found path to reach the goal node; and a tactical A* where entities try to avoid
 The environment in which the entities roam is a 2-D grid map where each grid square represent a terrain type, which effects the maximum
 velocity an entity can traverse through it. To construct the world map details are read from a text file in order to determine the colors
 and positions the grid squares (Tile objects) should be rendered in, and each Tile is added to the game's Map object, which is essentially
-a wrapper for a two-dimensional array of Tile objects (represented as a Tile**). By reading the map this way we are able to quickly
+a wrapper for a two-dimensional array of Tile objects (represented as a Tile\*\*). By reading the map this way we are able to quickly
 determine the tile the user is currently in, each physics update, as by knowing the the entity's position and the length of a Tile we can
 determine the Tile in the Map object with the formula: 
 
@@ -51,16 +51,16 @@ AIs stay within range of the player.
 *NOTE: The other flocking properties are present in the code, but were unsuccessful in running, thusly were commented out.*
 
 ### A* Pathfinding Implementation
-The secondary focus of the code is generating two seperate implementations of the A*, or A-Star, search pathfinding algorithm in order 
+The secondary focus of the code is generating two seperate implementations of the A\*, or A-Star, search pathfinding algorithm in order 
 to make the AI entities traverse the environment. In order to run the A* algorithm the Map has to be first represented as a list of 
-nodes, as A* assumes that the environment is represeted as a node graph, therefore it is necessary to be able to represent the Tiles 
-that make up the Map as PathNodes. With the list of PathNodes, all A* operations are handled by the AStar class. As mentioned beforehand,
+nodes, as A\* assumes that the environment is represeted as a node graph, therefore it is necessary to be able to represent the Tiles 
+that make up the Map as PathNodes. With the list of PathNodes, all A\* operations are handled by the AStar class. As mentioned beforehand,
 two implementations of A* have been written: classic/lowest cost, and tactical/least time spent in Open terrain Tiles.
 
-The first implementation of A* is the classic form of it which tries to get the 
+The first implementation of A\* is the classic form of it which tries to get the 
 best/cheapest/lowest cost path between point A and point B, while avoiding impassable objects such as walls or obstacles.
 
-The second implementation of A* still focuses on traveling from A to B, but attempts to arrive to B while minimizing the time spent in 
+The second implementation of A\* still focuses on traveling from A to B, but attempts to arrive to B while minimizing the time spent in 
 open terrain tiles, thus taking a more "tactical" approach.
 
 ## Simulation Execution

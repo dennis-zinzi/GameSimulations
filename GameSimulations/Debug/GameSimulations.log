@@ -1,35 +1,4 @@
-﻿Build started 10/05/2017 10:56:52.
-     1>Project "H:\CSC3222\GameSimulations\GameSimulations\GameSimulations.vcxproj" on node 2 (Build target(s)).
-     1>ClCompile:
-         C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\bin\CL.exe /c /I"H:\CSC3222\GameSimulations\SDL2-2.0.5\include" /I"H:\CSC3222\GameSimulations\SDL2-2.0.5\SDL2_image-2.0.1\include" /ZI /nologo /W3 /WX- /sdl /Od /Oy- /D _MBCS /Gm /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Zc:inline /Fo"Debug\\" /Fd"Debug\vc140.pdb" /Gd /TP /analyze- /errorReport:prompt AStar.cpp BoidFlock.cpp Entity.cpp Game.cpp Map.cpp PhysicsManager.cpp Renderer.cpp main.cpp
-         Game.cpp
-     1>h:\csc3222\gamesimulations\gamesimulations\game.cpp(29): warning C4018: '<': signed/unsigned mismatch
-     1>h:\csc3222\gamesimulations\gamesimulations\game.cpp(50): warning C4018: '<': signed/unsigned mismatch
-         Generating Code...
-         Skipping... (no relevant changes detected)
-         main.cpp
-         Renderer.cpp
-         PhysicsManager.cpp
-         Map.cpp
-         Entity.cpp
-         BoidFlock.cpp
-         AStar.cpp
-       Link:
-         C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\bin\link.exe /ERRORREPORT:PROMPT /OUT:"H:\CSC3222\GameSimulations\Debug\GameSimulations.exe" /INCREMENTAL /NOLOGO "H:\CSC3222\GameSimulations\SDL2-2.0.5\lib\x86\SDL2.lib" "H:\CSC3222\GameSimulations\SDL2-2.0.5\lib\x86\SDL2main.lib" "H:\CSC3222\GameSimulations\SDL2-2.0.5\SDL2_image-2.0.1\lib\x86\SDL2_image.lib" kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /Debug /PDB:"H:\CSC3222\GameSimulations\Debug\GameSimulations.pdb" /SUBSYSTEM:CONSOLE /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"H:\CSC3222\GameSimulations\Debug\GameSimulations.lib" /MACHINE:X86 Debug\AStar.obj
-         Debug\BoidFlock.obj
-         Debug\Entity.obj
-         Debug\Game.obj
-         Debug\main.obj
-         Debug\Map.obj
-         Debug\PathNode.obj
-         Debug\PhysicsManager.obj
-         Debug\Renderer.obj
-         Debug\Utilities.obj
-         Debug\Vector2D.obj
-         Debug\Vector3D.obj
-         GameSimulations.vcxproj -> H:\CSC3222\GameSimulations\Debug\GameSimulations.exe
-     1>Done Building Project "H:\CSC3222\GameSimulations\GameSimulations\GameSimulations.vcxproj" (Build target(s)).
-
-Build succeeded.
-
-Time Elapsed 00:00:07.29
+﻿  Game.cpp
+d:\denni\documents\gamedev\gamesimulations\gamesimulations\game.cpp(33): warning C4018: '<': signed/unsigned mismatch
+  GameSimulations.vcxproj -> D:\denni\Documents\GameDev\GameSimulations\Debug\GameSimulations.exe
+  GameSimulations.vcxproj -> D:\denni\Documents\GameDev\GameSimulations\Debug\GameSimulations.pdb (Partial PDB)

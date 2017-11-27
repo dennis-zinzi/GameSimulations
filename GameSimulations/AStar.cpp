@@ -32,7 +32,7 @@ vector<Vector2D> AStar::GetAStarPath(const Vector2D &StartPos, const Vector2D &E
 
 	//Check Path available
 	if(AStarAlgorithm(start, end, NodeMap, OpenList, ClosedList)){
-		cout << "PATH IS AVAILABLE!!!" << endl;
+		//cout << "PATH IS AVAILABLE!!!" << endl;
 		return GeneratePath(start, end, ClosedList);
 	}
 	else{
@@ -112,7 +112,7 @@ bool AStar::AStarAlgorithm(PathNode *StartNode, PathNode *FinalNode, vector<Path
 
 			//If the child node is the goal, we have a winner
 			if(Successor->ID == FinalNode->ID){
-				cout << "WE HAVE A PATH" << endl;
+				//cout << "WE HAVE A PATH" << endl;
 				Successor->Parent = Current;
 				ClosedList.push_back(Current);
 				return true;
@@ -204,7 +204,7 @@ vector<Vector2D> AStar::GetTacticalAStarPath(const Vector2D &StartPos, const Vec
 
 	//Check Path available
 	if(AStarTacticalAlgorithm(start, end, NodeMap, OpenList, ClosedList)){
-		cout << "PATH IS AVAILABLE!!!" << endl;
+		//cout << "PATH IS AVAILABLE!!!" << endl;
 		return GeneratePath(start, end, ClosedList);
 	}
 	else{
@@ -284,7 +284,7 @@ bool AStar::AStarTacticalAlgorithm(PathNode *StartNode, PathNode *FinalNode, vec
 
 			//If the child node is the goal, we have a winner
 			if(Successor->ID == FinalNode->ID){
-				cout << "WE HAVE A PATH" << endl;
+				//cout << "WE HAVE A PATH" << endl;
 				Successor->Parent = Current;
 				ClosedList.push_back(Current);
 				return true;

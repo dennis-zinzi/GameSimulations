@@ -9,44 +9,28 @@ BoidFlock::BoidFlock(vector<Entity*> boids, Entity *player){
 
 
 Vector2D BoidFlock::UpdateBoid(Entity *e){
-	Vector2D center = CalculateBoidCenter(e);
-		/*separation = CalculateBoidSeperation(e),
-		vel = CalculateBoidVelocity(e),
-		tendency = TendToPlayer(e);*/
-	
+	Vector2D center = CalculateBoidCenter(e),
+		separation = CalculateBoidSeperation(e),
+		vel = CalculateBoidVelocity(e);
+		//tendency = TendToPlayer(e);
+
+	Vector2D v = e->getVelocity() + center + vel;
 	if(player){
-		if(Vector2D::dist(e->getPosition(), player->getPosition()) > 20.0f){
-			return center*-1.0f;// + separation + vel + tendency;
-		}
-		else if(Vector2D::dist(e->getPosition(), player->getPosition()) < -20.0f){
-			return (center*1.0f);// + separation + vel + tendency) * -1.0;
-		}
-	}
-	else{
-		if(Vector2D::dist(e->getPosition(), playerPos) > 20.0f){
-			return center*-1.0f;// + separation + vel + tendency;
-		}
-		else if(Vector2D::dist(e->getPosition(), playerPos) < -20.0f){
-			return (center*1.0f);// + separation + vel + tendency) * -1.0;
-		}
+		v += separation;
 	}
 
-	return center*-1.0f;
-	//return /*player->getVelocity() * */(center + separation + vel + tendency);
+	return (v / v.magnitude()) * MAX_VEL;
 }
 
 
 /* Boid Rules */
 Vector2D BoidFlock::CalculateBoidCenter(Entity *e){
 	if(player){
-		return (e->getPosition() - player->getPosition()) * BOID_COHESION;
+		return (player->getPosition() - e->getPosition()) * BOID_COHESION;
 	}
 	else{
-		return (e->getPosition() - playerPos) * BOID_COHESION;
+		return (playerPos - e->getPosition()) * BOID_COHESION;
 	}
-	
-	//return e->getPosition() * BOID_COHESION;
-	//return (player->getPosition() - e->getPosition()) * BOID_COHESION;
 }
 
 
@@ -58,7 +42,7 @@ Vector2D BoidFlock::CalculateBoidSeperation(Entity *e){
 			continue;
 		}
 
-		if(abs(Vector2D::dist(b->getPosition(), e->getPosition())) < BOID_SEPARATION){
+		if((b->getPosition() - e->getPosition()).magnitude() < BOID_SEPARATION){
 			separation -= b->getPosition() - e->getPosition();
 		}
 	}
@@ -78,7 +62,7 @@ Vector2D BoidFlock::CalculateBoidVelocity(Entity *e){
 		vel += b->getVelocity();
 	}
 
-	vel / (boids.size() - 1);
+	vel /= (boids.size() - 1.0f);
 
 	return (vel - e->getVelocity()) * ALIGNMENT_FACTOR;
 }
@@ -94,8 +78,8 @@ void BoidFlock::LimitSpeed(Entity *e){
 
 Vector2D BoidFlock::TendToPlayer(Entity *e){
 	if(player){
-		return (player->getPosition()) * GOAL_TEND;
+		return (player->getPosition() - e->getPosition()) * GOAL_TEND;
 	}
 
-	return playerPos * GOAL_TEND;
+	return (playerPos - e->getPosition())  * GOAL_TEND;
 }

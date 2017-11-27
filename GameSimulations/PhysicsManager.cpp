@@ -34,7 +34,6 @@ void PhysicsManager::UpdateVelocity(Entity *e, bool *forces){
 	}
 
 	Vector2D vel = e->getVelocity() + acceleration*timeStep;
-	//cout << "New v: " << vel.magnitude() << endl;
 	e->setVelocity(vel);
 }
 
@@ -56,12 +55,12 @@ void PhysicsManager::UpdateVelocityDir(Entity *e, const Vector2D &dir){
 		uDir.setY(ACCELERATION);
 	}
 	else if(uDir.getY() < 0){
-		uDir.setX(-ACCELERATION);
+		uDir.setY(-ACCELERATION);
 	}
 	else{
 		e->setVelocity(Vector2D(e->getVelocity().getX(), 0.0f));
 	}
-
+	//cout << "Dir: "<<uDir << endl;
 	Vector2D vel = e->getVelocity() + uDir*timeStep;
 	//cout << "New v: " << vel.magnitude() << endl;
 	e->setVelocity(vel);
@@ -149,7 +148,7 @@ void PhysicsManager::handleWallCollision(Entity *eHitting){
 	Vector2D normalVelocity = normal * Vector2D::dotProduct(netVelocity, normal);
 
 
-	float jNumerator = -(1 + ELASTICITY) * Vector2D::dotProduct(netVelocity, normal);
+	float jNumerator = (-1.0f * (1.0f + ELASTICITY)) * Vector2D::dotProduct(netVelocity, normal);
 	float jDenominator = Vector2D::dotProduct(normal, (normal * ((1.0f / eHitting->getMass()) + 1.0f)));
 
 	if(jDenominator <= 0.0f){
@@ -158,7 +157,7 @@ void PhysicsManager::handleWallCollision(Entity *eHitting){
 
 	float J = jNumerator / jDenominator;
 
-	eHitting->setVelocity((normal * (J / eHitting->getMass())));
+	eHitting->setVelocity((/*eHitting->getVelocity() + */(normal * (J / eHitting->getMass()))) * 5.5f);
 
 	UpdateEntityPos(eHitting);
 }

@@ -11,9 +11,9 @@
 
 using std::vector;
 
-#define BOID_COHESION 0.1f
-#define BOID_SEPARATION 1.0f
-#define ALIGNMENT_FACTOR 0.05f
+#define BOID_COHESION 0.01f
+#define BOID_SEPARATION 25.0f
+#define ALIGNMENT_FACTOR 0.125f
 #define GOAL_TEND 0.5f
 
 

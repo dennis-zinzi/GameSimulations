@@ -23,33 +23,39 @@ void Game::UpdateEntities(){
 
 		Vector2D vel;
 
+		//If using Flocking 
 		if(e->getPath().empty() && flock != nullptr){
 			vel = flock->UpdateBoid(e);
+			//Use boid calculated velocity
+			e->setVelocity(vel);
 		}
+		//If using pathfinding
 		else if(!e->getPath().empty() && e->getCurrentIndex() < e->getPath().size() - 1){
-			vel = e->getPath()[e->getCurrentIndex() + 1] - e->getPosition();
 
 			if(Vector2D::dist(e->getPath()[e->getCurrentIndex() + 1], e->getPosition()) < 25.0f){
-				cout << e->getCurrentIndex() + 1 << "/" << e->getPath().size() << endl;
+				//cout << e->getCurrentIndex() + 1 << "/" << e->getPath().size() << endl;
 				e->setCurrentIndex(e->getCurrentIndex() + 1);
 
 				//Decelerate AI to make them turn
 				physics->UpdateVelocityDir(e, Vector2D());
 			}
+			else{
+				vel = e->getPath()[e->getCurrentIndex() + 1] - e->getPosition();
+				physics->UpdateVelocityDir(e, vel);
+			}
 		}
 
+		//Check wall collisions
 		if(e->getCurrentTile().GetType() == TileType::WALL) {
 			physics->handleWallCollision(e);
 		}
 
-		physics->UpdateVelocityDir(e, vel);
 		physics->UpdateEntityPos(e);
 	}
 
-	for(auto index : indicies){
-		if(index < entities.size()){
-			entities.erase(entities.begin() + index);
-		}
+	//for(auto index : indicies){
+	for(int i = indicies.size() - 1; i >= 0; i--){
+		entities.erase(entities.begin() + indicies[i]);
 	}
 
 	if(player && player->getWin()){
@@ -142,6 +148,7 @@ bool Game::CheckInputs(){
 
 		physics->UpdateVelocity(player, directions);
 		physics->UpdateEntityPos(player);
+		//cout << "Player: " << player->getPosition() << endl;
 	}
 
 	return true;

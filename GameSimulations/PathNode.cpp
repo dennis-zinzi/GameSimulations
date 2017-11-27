@@ -51,7 +51,7 @@ float PathNode::GetTacticalTerrainCost(){
 			return 1.65f;
 		case GATE:
 			return 1.85f;
-			//Used for impulse
+		//Used for impulse
 		case WALL:
 			return 10.0f;
 		default:
