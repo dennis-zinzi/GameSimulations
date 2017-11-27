@@ -1,4 +1,0 @@
-﻿  Game.cpp
-d:\denni\documents\gamedev\gamesimulations\gamesimulations\game.cpp(33): warning C4018: '<': signed/unsigned mismatch
-  GameSimulations.vcxproj -> D:\denni\Documents\GameDev\GameSimulations\Debug\GameSimulations.exe
-  GameSimulations.vcxproj -> D:\denni\Documents\GameDev\GameSimulations\Debug\GameSimulations.pdb (Partial PDB)
